@@ -1,0 +1,70 @@
+" plug
+call plug#begin('~/.vim/plugged')
+  " enviroment
+  Plug 'tpope/vim-sensible'
+
+  " theme
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+  Plug 'NLKNguyen/papercolor-theme'
+
+  " utility
+  Plug 'ntpeters/vim-better-whitespace'
+  Plug 'airblade/vim-gitgutter'
+  Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+  Plug 'scrooloose/nerdcommenter', { 'on': [ '<plug>NERDCommenterComment', '<plug>NERDCommenterUncomment' ] }
+
+  " completion
+  Plug 'ervandew/supertab'
+  Plug 'prabirshrestha/asyncomplete.vim'
+  Plug 'prabirshrestha/async.vim'
+  Plug 'prabirshrestha/vim-lsp'
+  Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+  " python
+  Plug 'tell-k/vim-autopep8', { 'for': 'python' }
+
+call plug#end()
+
+
+" appearance
+  let g:airline_theme='murmur'
+
+  colorscheme PaperColor
+  set background=dark
+  set number
+  set cursorline
+
+
+" auto
+  " trailing whitespace
+  autocmd BufEnter * EnableStripWhitespaceOnSave
+
+
+" keybind
+  " tree
+  map <C-n> :NERDTreeToggle<CR>
+
+  " comment
+  map <C-c><C-c> <plug>NERDCommenterComment
+  map <C-c><C-u> <plug>NERDCommenterUncomment
+
+  " autopep8
+  autocmd FileType python noremap <buffer> <F8> :call Autopep8()<CR>
+
+
+" other
+  " gitgutter
+  set updatetime=100
+
+  " asyncomplete
+  set completeopt-=preview
+
+  " language server (from asyncomplete)
+  if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+  endif

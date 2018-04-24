@@ -1,0 +1,39 @@
+[user]
+	name = tzing
+	email = tzingshih@gmail.com
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[alias]
+	tree = ilog --all
+[diff]
+	colorMoved = zebra
+
+# diff-so-fancy
+[core]
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[color]
+	ui = true
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = yellow
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	oldMoved = red dim
+	newMoved = green dim
+	whitespace = red reverse
+[diff-so-fancy]
+	markEmptyLines = false
+	stripLeadingSymbols = false
+
+# ilog
+[ilog]
+	format = %C(auto)%h%d %s %C(dim green)%cr%C(reset)

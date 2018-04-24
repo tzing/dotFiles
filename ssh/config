@@ -1,0 +1,22 @@
+Host lbp
+    Hostname lbp.firc.tw
+    User tzing
+
+Host lab
+    Hostname 140.113.73.133
+    User tzing
+
+Host ptt
+    Hostname ptt.cc
+    User bbsu
+
+Host ddm
+    Hostname 140.113.72.31
+    User tzing
+
+Host zong
+    Hostname 140.113.72.29
+    User tzing
+
+Host wrds
+    Hostname wrds-cloud.wharton.upenn.edu
