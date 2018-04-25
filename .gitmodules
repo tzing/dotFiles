@@ -37,3 +37,9 @@
 [submodule "local/emojify"]
 	path = local/emojify
 	url = git@github.com:mrowa44/emojify.git
+[submodule "config/tmux/tmux-logging"]
+	path = config/tmux/tmux-logging
+	url = git@github.com:tmux-plugins/tmux-logging.git
+[submodule "config/tmux/tmux-copycat"]
+	path = config/tmux/tmux-copycat
+	url = git@github.com:tmux-plugins/tmux-copycat.git

@@ -3,29 +3,45 @@
 :wrench: my personal environment configs
 
 
-## commands
+## cheatsheet
 
-vim :notebook:
++ vim :notebook:
 
-+ `vim +PlugInstall`
+    + install: `vim +PlugInstall`
+
++ tmux
+
+    + toggle start/stop logging: prefix + `shift` + `p` (*tmux-logging*)
+    + save complete pane history: prefix + `alt` + `shift` + `p` (*tmux-logging*)
+    + search: prefix + `/` (*tmux-copycat*)
 
 
-## requirement
+## dependency
 
-system :computer:
++ system :computer:
 
-+ `git`
-+ `zsh` 5.4+
+    + `git`
+    + `zsh` 5.4+
+
++ syntax highlight for less (select one)
+
+    + [pygmentize](http://pygments.org/docs/cmdline/)
+    + [source highlight](https://www.gnu.org/software/src-highlite/)
+
++ *tmux-yank* :paperclip:
+
+    + `xsel` or `xclip` (linux)
+    + [reattach-to-user-namespace](https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard) (osx)
+
++ *git-ilog*
+
+    + [fzf](http://zsh.sourceforge.net/)
+    + `xsel` or `xclip` (linux)
 
 
 ## quick link
 
-+ dependency for `tmux-yank` :paperclip:
-
-    + xsel (linux)
-    + [reattach-to-user-namespace](https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard) (osx)
-
-- language server for vim (from `vim-lsp`)
+- language server for vim (from *vim-lsp*)
 
     + https://github.com/prabirshrestha/vim-lsp/wiki/Servers
     + for python
