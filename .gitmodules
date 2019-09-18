@@ -22,21 +22,12 @@
 [submodule "config/tmux/tmux-themepack"]
 	path = config/tmux/tmux-themepack
 	url = git@github.com:jimeh/tmux-themepack.git
-[submodule "local/git-cal"]
-	path = local/git-cal
-	url = git@github.com:k4rthik/git-cal.git
-[submodule "local/git-branch-status"]
-	path = local/git-branch-status
-	url = git@github.com:alexdavid/git-branch-status.git
 [submodule "local/git-ilog"]
 	path = local/git-ilog
 	url = git@github.com:tzing/git-ilog.git
 [submodule "local/diff-so-fancy"]
 	path = local/diff-so-fancy
 	url = git@github.com:so-fancy/diff-so-fancy.git
-[submodule "local/emojify"]
-	path = local/emojify
-	url = git@github.com:mrowa44/emojify.git
 [submodule "config/tmux/tmux-logging"]
 	path = config/tmux/tmux-logging
 	url = git@github.com:tmux-plugins/tmux-logging.git
