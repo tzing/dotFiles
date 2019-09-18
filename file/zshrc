@@ -42,6 +42,7 @@ plugins=(
   man
   tmux
   wd
+  zdict
 )
 
 source $ZSH/oh-my-zsh.sh
