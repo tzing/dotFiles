@@ -71,16 +71,23 @@ export SSH_KEY_PATH="~/.ssh/id_ed25519"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias top=htop
 alias du='du -h -d1'
 alias df='df -h'
 alias vi=vim
 
+# htop
+if type htop > /dev/null; then
+    alias top=htop
+fi
+
 # tmux
-if [[ -n $TMUX ]] then
-  alias tmux='tmux -f ~/.config/tmux/tmux-inner.conf -S /tmp/tmux-`id -u`-inner'
-else
-  alias tmux='tmux -f ~/.config/tmux/tmux.conf'
+if type tmux > /dev/null; then
+    if [[ -n $TMUX ]] then
+        alias tmux="tmux -f $HOME/.config/tmux/tmux-inner.conf -S /tmp/tmux-$(id -u)-inner"
+    else
+        alias tmux="tmux -f $HOME/.config/tmux/tmux.conf"
+        alias tmux-inner="tmux -f $HOME/.config/tmux/tmux-inner.conf -S /tmp/tmux-$(id -u)-inner"
+    fi
 fi
 
 # pipenv
@@ -89,8 +96,8 @@ export PIPENV_VENV_IN_PROJECT=1
 
 # temp dir
 cdtemp() {
-    export OLD_DIR=$(pwd)
-    export TEMP_DIR=$(mktemp -d)
+    export OLD_DIR="$(pwd)"
+    export TEMP_DIR="$(mktemp -d)"
 
     cd "$TEMP_DIR"
 
@@ -113,7 +120,7 @@ fi
 
 less () {
     env \
-        LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-        LESS_TERMCAP_se=$(printf "\e[0m") \
+        LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
+        LESS_TERMCAP_se="$(printf '\e[0m')" \
         less -i "$@"
 }
