@@ -36,11 +36,9 @@ ZSH_CUSTOM="$HOME/.config/zsh"
 plugins=(
   fast-syntax-highlighting
   github
-  cp
   calc
   colored-man-pages
   man
-  tmux
   wd
 )
 
@@ -82,11 +80,12 @@ fi
 
 # tmux
 if type tmux > /dev/null; then
+    TMUX_BIN=`which tmux`
+    alias tmux-inner="$TMUX_BIN -f $HOME/.config/tmux/tmux-inner.conf -S /tmp/tmux-$(id -u)-inner"
     if [[ -n $TMUX ]] then
-        alias tmux="tmux -f $HOME/.config/tmux/tmux-inner.conf -S /tmp/tmux-$(id -u)-inner"
+        alias tmux="tmux-inner"
     else
-        alias tmux="tmux -f $HOME/.config/tmux/tmux.conf"
-        alias tmux-inner="tmux -f $HOME/.config/tmux/tmux-inner.conf -S /tmp/tmux-$(id -u)-inner"
+        alias tmux="$TMUX_BIN -f $HOME/.config/tmux/tmux.conf"
     fi
 fi
 
@@ -124,3 +123,15 @@ less () {
         LESS_TERMCAP_se="$(printf '\e[0m')" \
         less -i "$@"
 }
+
+# diff pager
+if type diff-so-fancy > /dev/null; then
+    diffp() {
+        diff -u "$1" "$2" | diff-so-fancy | less
+    }
+fi
+
+# rsync
+if type rsync > /dev/null; then
+    alias rsync='rsync -rlptD -hhh --backup-dir=/tmp/rsync -e /dev/null --progress'
+fi
