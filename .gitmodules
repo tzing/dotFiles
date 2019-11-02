@@ -19,9 +19,6 @@
 [submodule "config/tmux/tmux-sensible"]
 	path = config/tmux/tmux-sensible
 	url = git@github.com:tmux-plugins/tmux-sensible.git
-[submodule "config/tmux/tmux-themepack"]
-	path = config/tmux/tmux-themepack
-	url = git@github.com:jimeh/tmux-themepack.git
 [submodule "local/git-ilog"]
 	path = local/git-ilog
 	url = git@github.com:tzing/git-ilog.git
