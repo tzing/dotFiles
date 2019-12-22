@@ -134,5 +134,9 @@ fi
 
 # rsync
 if type rsync > /dev/null; then
-    alias rsync='rsync -rlptD -hhh --backup-dir=/tmp/rsync -e /dev/null --progress'
+    alias rsync='rsync -rlptD -hhh --progress'
 fi
+
+# poetry
+export POETRY_HOME="$HOME/.local/poetry"
+
