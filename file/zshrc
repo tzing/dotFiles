@@ -135,3 +135,7 @@ fi
 if type rsync > /dev/null; then
     alias rsync='rsync -rlptD -hhh --progress'
 fi
+
+# poetry
+export POETRY_HOME="$HOME/.local/poetry"
+
