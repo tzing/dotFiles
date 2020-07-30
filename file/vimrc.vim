@@ -35,6 +35,9 @@ call plug#end()
   set colorcolumn=80,120
   set t_Co=256
 
+" case insensitive search
+  set ignorecase
+  set smartcase
 
 " auto
   " trailing whitespace
@@ -54,21 +57,16 @@ call plug#end()
   map <C-c><C-c> <plug>NERDCommenterComment
   map <C-c><C-u> <plug>NERDCommenterUncomment
 
-
-" other
-  " gitgutter
-  set updatetime=100
-
-  " case insensitive search
-  set smartcase
-
   " asyncomplete
   set completeopt-=preview
 
   let g:lsp_text_edit_enabled = 0
   let g:lsp_signature_help_enabled = 0
 
-  " language server (from asyncomplete)
+" language server (from asyncomplete)
+  let g:lsp_text_edit_enabled = 0
+  let g:lsp_signature_help_enabled = 0
+
   if executable('pyls')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'pyls',
@@ -76,3 +74,7 @@ call plug#end()
         \ 'whitelist': ['python'],
         \ })
   endif
+
+" other
+  " gitgutter
+  set updatetime=100
