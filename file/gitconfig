@@ -1,20 +1,17 @@
 [user]
 	name = tzing
 	email = tzingshih@gmail.com
+
+[core]
+	pager = diff-so-fancy | less --tabs=4 -RFX
+	editor = vim
+
 [filter "lfs"]
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
-[alias]
-	tree = ilog --all
-[diff]
-	colorMoved = zebra
 
-# diff-so-fancy
-[core]
-	pager = diff-so-fancy | less --tabs=4 -RFX
-	editor = vim
 [color]
 	ui = true
 [color "diff-highlight"]
@@ -31,10 +28,15 @@
 	oldMoved = red dim
 	newMoved = green dim
 	whitespace = red reverse
+
+[diff]
+	colorMoved = zebra
+
 [diff-so-fancy]
 	markEmptyLines = false
 	stripLeadingSymbols = false
 
-# ilog
 [ilog]
 	format = %C(auto)%h%d %s %C(dim green)%cr%C(reset)
+[alias]
+	tree = ilog --all

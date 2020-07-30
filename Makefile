@@ -1,9 +1,9 @@
 all: | collect install
 
-install: install.vim install.zsh install.pip install.tmux install.ssh
+install: install.vim install.zsh install.pip install.tmux install.ssh install.git
 	#
 
-collect: collect.vim collect.zsh collect.ssh collect.tmux
+collect: collect.vim collect.zsh collect.ssh collect.tmux collect.git
 	#
 
 #
@@ -92,3 +92,16 @@ submodule.tmux.%:
 
 collect.tmux:
 	cp $(HOME)/.config/tmux/*.conf config/tmux/
+
+
+#
+#	Section- git
+#
+install.git: install.gitconfig install.gitignore
+	#
+
+install.git%:
+	cp file/git$* $(HOME)/.git$* || true
+
+collect.git:
+	cp $(HOME)/.gitconfig file/gitconfig
