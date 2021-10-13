@@ -6,6 +6,9 @@
 	pager = diff-so-fancy | less --tabs=4 -RFX
 	editor = vim
 
+[init]
+	defaultBranch = trunk
+
 [filter "lfs"]
 	process = git-lfs filter-process
 	required = true
@@ -14,11 +17,13 @@
 
 [color]
 	ui = true
+
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
 	newNormal = green bold
 	newHighlight = green bold 22
+
 [color "diff"]
 	meta = yellow
 	frag = magenta bold
@@ -32,11 +37,19 @@
 [diff]
 	colorMoved = zebra
 
+[pull]
+	ff = only
+	prune = true
+
+[fetch]
+	prune = true
+
 [diff-so-fancy]
 	markEmptyLines = false
 	stripLeadingSymbols = false
 
 [ilog]
 	format = %C(auto)%h%d %s %C(dim green)%cr%C(reset)
+
 [alias]
 	tree = ilog --all

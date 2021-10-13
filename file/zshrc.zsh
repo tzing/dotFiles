@@ -1,18 +1,20 @@
-# path
 declare -A ZINIT
 ZINIT[BIN_DIR]="$HOME/.config/zsh/bin"
 ZINIT[HOME_DIR]="$HOME/.config/zsh"
 
-export POETRY_HOME="$HOME/.local/poetry"
-export PATH="$HOME/.local/bin:/usr/local/sbin:$PATH"
+module_path+=( "$HOME/.config/zsh/bin/zmodules/Src" )
+zmodload zdharma/zplugin
 
-# enable zinit
 source "${ZINIT[BIN_DIR]}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
+# path
+export PATH="$HOME/.local/bin:/usr/local/sbin:$PATH"
+
 # oh-my-zsh
 HYPEN_INSENSITIVE="true"
+CASE_SENSITIVE="false"
 zinit snippet OMZL::completion.zsh
 zinit snippet OMZL::directories.zsh
 zinit snippet OMZL::functions.zsh
@@ -31,13 +33,6 @@ zinit snippet OMZP::colored-man-pages
 zinit light zdharma/fast-syntax-highlighting
 zinit light arzzen/calc.plugin.zsh
 
-zinit ice as"completion"
-zinit snippet OMZP::pip/_pip
-zinit snippet OMZP::pip/pip.plugin.zsh
-
-zinit ice as"program" pick"wd.sh" atload" wd() { . wd.sh }"
-zinit light mfaerevaag/wd
-
 zinit ice as"program" pick"diff-so-fancy"
 zinit light so-fancy/diff-so-fancy
 
@@ -48,8 +43,19 @@ zinit ice from"gh-r" as"program"
 zinit light junegunn/fzf-bin
 zinit snippet "https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
 
+zinit snippet "https://raw.githubusercontent.com/MichaelAquilina/zsh-history-filter/master/zsh-history-filter.plugin.zsh"
+export HISTORY_FILTER_EXCLUDE=(
+    "AWS_ACCESS_KEY_ID"
+    "AWS_SECRET_ACCESS_KEY"
+    "AWS_SESSION_TOKEN"
+    "AWS_SECURITY_TOKEN"
+)
+
 # completions
 autoload -Uz compinit && compinit
+
+# zsh opt
+setopt auto_cd
 
 # language environment
 export LANG=en_US.UTF-8
@@ -72,6 +78,10 @@ fi
 
 # homebrew
 export HOMEBREW_NO_AUTO_UPDATE=1
+
+# python
+export POETRY_HOME="$HOME/.local/poetry"
+export PIPENV_VENV_IN_PROJECT=true
 
 # temp dir
 cdtemp() {
@@ -118,4 +128,3 @@ fi
 if type rsync > /dev/null; then
     alias rsync='rsync -rlptD -hhh --progress'
 fi
-
