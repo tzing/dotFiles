@@ -1,9 +1,9 @@
 all: | collect install
 
-install: install.vim install.zsh install.pip install.tmux install.ssh install.git
+install: install.vim install.zsh install.pip install.tmux install.git
 	#
 
-collect: collect.vim collect.zsh collect.ssh collect.tmux collect.git
+collect: collect.vim collect.zsh collect.tmux collect.git
 	#
 
 #
