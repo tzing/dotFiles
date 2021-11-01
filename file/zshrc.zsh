@@ -30,7 +30,7 @@ zinit light tzing/clover.zsh-theme
 # plugins
 zinit snippet OMZP::colored-man-pages
 
-zinit light zdharma/fast-syntax-highlighting
+zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light arzzen/calc.plugin.zsh
 
 zinit ice as"program" pick"diff-so-fancy"

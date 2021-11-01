@@ -9,4 +9,4 @@
 	url = https://github.com/tmux-plugins/tmux-sensible.git
 [submodule "config/zsh/bin"]
 	path = config/zsh/bin
-	url = https://github.com/zdharma/zinit.git
+	url = https://github.com/zdharma-continuum/zinit.git
