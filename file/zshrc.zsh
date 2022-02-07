@@ -2,15 +2,12 @@ declare -A ZINIT
 ZINIT[BIN_DIR]="$HOME/.config/zsh/bin"
 ZINIT[HOME_DIR]="$HOME/.config/zsh"
 
-module_path+=( "$HOME/.config/zsh/bin/zmodules/Src" )
-zmodload zdharma/zplugin
-
 source "${ZINIT[BIN_DIR]}/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 # path
-export PATH="$HOME/.local/bin:/usr/local/sbin:$PATH"
+export PATH="$HOME/.local/bin:/usr/local/sbin:/opt/homebrew/bin:$PATH"
 
 # oh-my-zsh
 HYPEN_INSENSITIVE="true"

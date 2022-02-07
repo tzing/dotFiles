@@ -10,3 +10,4 @@
 [submodule "config/zsh/bin"]
 	path = config/zsh/bin
 	url = https://github.com/zdharma-continuum/zinit.git
+	branch = main
