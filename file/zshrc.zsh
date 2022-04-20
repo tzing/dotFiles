@@ -9,32 +9,22 @@ autoload -Uz _zinit
 # path
 export PATH="$HOME/.local/bin:/usr/local/sbin:/opt/homebrew/bin:$PATH"
 
-# oh-my-zsh
-HYPEN_INSENSITIVE="true"
-CASE_SENSITIVE="false"
-zinit snippet OMZL::completion.zsh
-zinit snippet OMZL::directories.zsh
-zinit snippet OMZL::functions.zsh
-zinit snippet OMZL::grep.zsh
-zinit snippet OMZL::history.zsh
-zinit snippet OMZL::key-bindings.zsh
-zinit snippet OMZL::misc.zsh
+# appearance
 zinit snippet OMZL::theme-and-appearance.zsh
-
-# theme
-zinit light tzing/clover.zsh-theme
-
-# plugins
 zinit snippet OMZP::colored-man-pages
 
+zinit light tzing/clover.zsh-theme
 zinit light zdharma-continuum/fast-syntax-highlighting
-zinit light arzzen/calc.plugin.zsh
 
-zinit ice as"program" pick"diff-so-fancy"
-zinit light so-fancy/diff-so-fancy
+# key binding
+HYPHEN_INSENSITIVE="true"  # for OMZL::completion.zsh
+CASE_SENSITIVE="false"     # for OMZL::completion.zsh
 
-zinit ice as"program" pick"git-ilog"
-zinit light tzing/git-ilog
+zinit snippet OMZL::completion.zsh
+zinit snippet OMZL::history.zsh
+zinit snippet OMZL::key-bindings.zsh
+
+autoload -Uz compinit && compinit
 
 zinit ice from"gh-r" as"program"
 zinit light junegunn/fzf-bin
@@ -47,9 +37,6 @@ export HISTORY_FILTER_EXCLUDE=(
     "AWS_SESSION_TOKEN"
     "AWS_SECURITY_TOKEN"
 )
-
-# completions
-autoload -Uz compinit && compinit
 
 # zsh opt
 setopt auto_cd
@@ -64,7 +51,14 @@ export EDITOR='vim'
 # ssh
 export SSH_KEY_PATH="~/.ssh/id_ed25519"
 
-# alias
+# git
+zinit ice as"program" pick"diff-so-fancy"
+zinit light so-fancy/diff-so-fancy
+
+zinit ice as"program" pick"git-ilog"
+zinit light tzing/git-ilog
+
+# misc
 alias du='du -h -d1'
 alias df='df -h'
 alias vi=vim
@@ -72,6 +66,13 @@ alias vi=vim
 if type htop > /dev/null; then
     alias top=htop
 fi
+
+zinit snippet OMZL::directories.zsh
+zinit snippet OMZL::grep.zsh
+zinit snippet OMZL::functions.zsh  # for OMZL::misc.zsh
+zinit snippet OMZL::misc.zsh
+
+zinit light arzzen/calc.plugin.zsh
 
 # homebrew
 export HOMEBREW_NO_AUTO_UPDATE=1
