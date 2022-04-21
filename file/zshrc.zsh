@@ -72,9 +72,6 @@ zinit snippet OMZL::grep.zsh
 zinit snippet OMZL::functions.zsh  # for OMZL::misc.zsh
 zinit snippet OMZL::misc.zsh
 
-zinit ice as"program"
-zinit light romkatv/zshi
-
 zinit light arzzen/calc.plugin.zsh
 
 # homebrew
@@ -83,10 +80,6 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 # python
 export POETRY_HOME="$HOME/.local/poetry"
 export PIPENV_VENV_IN_PROJECT=true
-
-venv() {
-    zshi "source .venv/bin/activate"
-}
 
 # temp dir
 cdtemp() {
