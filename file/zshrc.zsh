@@ -36,6 +36,7 @@ export HISTORY_FILTER_EXCLUDE=(
     "AWS_SECRET_ACCESS_KEY"
     "AWS_SESSION_TOKEN"
     "AWS_SECURITY_TOKEN"
+    "STITCH_TOKEN"
 )
 
 # zsh opt
@@ -68,7 +69,6 @@ if type htop > /dev/null; then
 fi
 
 zinit snippet OMZL::directories.zsh
-zinit snippet OMZL::grep.zsh
 zinit snippet OMZL::functions.zsh  # for OMZL::misc.zsh
 zinit snippet OMZL::misc.zsh
 
@@ -122,3 +122,12 @@ fi
 if type rsync > /dev/null; then
     alias rsync='rsync -rlptD -hhh --progress'
 fi
+
+# hashicrop vault
+complete -o nospace -C /usr/local/bin/vault vault
+
+# ripgrep
+zinit ice from"gh-r" as"program" pick"ripgrep"
+zinit light microsoft/ripgrep-prebuilt
+
+alias grep=rg
