@@ -3,41 +3,81 @@
 [tzing](https://github.com/tzing)'s personal environment configs.
 
 
-## Quick start
+## Deploy configs
 
 ```bash
 make install
 ```
 
 
-## Cheat sheet
+## Unmanaged resources
 
-* [Fira Code](https://github.com/tonsky/FiraCode) font
+* [Homebrew](https://brew.sh/)
+
+  ```bash
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```
+
+* [Fira code](https://github.com/tonsky/FiraCode) font
 
     ```bash
     brew install --cask homebrew/cask-fonts/font-fira-code
     ```
 
-* Useful Firefox addons
+* Utilities
+
+  ```bash
+  brew install \
+    git \
+    zsh \
+    vim \
+    tmux \
+    htop \
+    tldr \
+    gh
+  ```
+
+* Desktop apps
+
+  ```bash
+  brew install --cask \
+    firefox \
+    microsoft-edge \
+    visual-studio-code \
+    docker \
+    spotify \
+    obsidian \
+    drawio
+  ```
+
+* Firefox Addons
 
   * [uBlock Origin](https://addons.mozilla.org/zh-TW/firefox/addon/ublock-origin/)
   * [Multi-Account Containers](https://addons.mozilla.org/zh-TW/firefox/addon/multi-account-containers/)
   * [Facebook Container](https://addons.mozilla.org/zh-TW/firefox/addon/facebook-container/)
 
-* [Language server](https://github.com/prabirshrestha/vim-lsp/wiki/Servers) for vim
+* Vim
+
+  * [vim-plug](https://github.com/junegunn/vim-plug)
+
+    ```bash
+    vim +PlugInstall!
+    ```
+
+  * [Language server](https://github.com/prabirshrestha/vim-lsp/wiki/Servers)
 
     ```bash
     pip install python-language-server
     ```
 
+* [Poetry](https://github.com/python-poetry/poetry)
+
+  ```bash
+  curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+  ```
+
 * [Pygments](https://github.com/pygments/pygments)
 
-    ```bash
-    pip install Pygments
-    ```
-
-* [poetry](https://github.com/python-poetry/poetry)
-
-    ```bash
-    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-    ```
+  ```bash
+  pip install Pygments
+  ```
