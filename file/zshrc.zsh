@@ -37,6 +37,7 @@ export HISTORY_FILTER_EXCLUDE=(
     "AWS_SESSION_TOKEN"
     "AWS_SECURITY_TOKEN"
     "STITCH_TOKEN"
+    "VAULT_TOKEN"
 )
 
 # zsh opt
