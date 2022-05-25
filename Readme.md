@@ -43,9 +43,10 @@ make install
   brew install --cask \
     firefox \
     microsoft-edge \
+    scroll-reverser \
+    spotify \
     visual-studio-code \
     docker \
-    spotify \
     obsidian \
     drawio
   ```
