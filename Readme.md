@@ -74,4 +74,5 @@ make install
 
   ```bash
   curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+  poetry config virtualenvs.in-project true
   ```

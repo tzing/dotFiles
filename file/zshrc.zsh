@@ -73,8 +73,6 @@ zinit snippet OMZL::directories.zsh
 zinit snippet OMZL::functions.zsh  # for OMZL::misc.zsh
 zinit snippet OMZL::misc.zsh
 
-zinit light arzzen/calc.plugin.zsh
-
 # homebrew
 export HOMEBREW_NO_AUTO_UPDATE=1
 
@@ -113,7 +111,9 @@ if type rsync > /dev/null; then
 fi
 
 # hashicrop vault
-complete -o nospace -C /usr/local/bin/vault vault
+if type vault > /dev/null; then
+    complete -o nospace -C $(which vault) vault
+fi
 
 # ripgrep
 zinit ice from"gh-r" as"program" pick"ripgrep-*/rg"
@@ -131,3 +131,7 @@ less () {
         LESS_TERMCAP_se="$(printf '\e[0m')" \
         bat --pager "less -ci" --paging "always" "$@"
 }
+
+# docker
+zinit ice as"completion"
+zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
