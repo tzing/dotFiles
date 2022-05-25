@@ -96,18 +96,6 @@ cdtemp() {
     }
 }
 
-# colorize less
-if type pygmentize > /dev/null; then
-    export LESSOPEN="| $(which pygmentize) %s 2> /dev/null"
-fi
-
-less () {
-    env \
-        LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
-        LESS_TERMCAP_se="$(printf '\e[0m')" \
-        less -i "$@"
-}
-
 # tmux
 if type tmux > /dev/null; then
     TMUX_BIN=`which tmux`
@@ -128,7 +116,18 @@ fi
 complete -o nospace -C /usr/local/bin/vault vault
 
 # ripgrep
-zinit ice from"gh-r" as"program" pick"ripgrep"
-zinit light microsoft/ripgrep-prebuilt
+zinit ice from"gh-r" as"program" pick"ripgrep-*/rg"
+zinit light BurntSushi/ripgrep
 
 alias grep=rg
+
+# bat
+zinit ice from"gh-r" as"program" pick"bat-*/bat"
+zinit light sharkdp/bat
+
+less () {
+    env \
+        LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
+        LESS_TERMCAP_se="$(printf '\e[0m')" \
+        bat --pager "less -ci" --paging "always" "$@"
+}

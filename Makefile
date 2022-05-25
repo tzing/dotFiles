@@ -1,6 +1,6 @@
 all: | collect install
 
-install: install.vim install.zsh install.pip install.tmux install.git
+install: install.vim install.zsh install.pip install.tmux install.git install.bat
 	#
 
 collect: collect.vim collect.zsh collect.tmux collect.git
@@ -105,3 +105,11 @@ install.git%:
 
 collect.git:
 	cp $(HOME)/.gitconfig file/gitconfig
+
+
+#
+#	Section- bat
+#
+install.bat:
+	mkdir -p $(HOME)/.config/bat
+	cp -af config/bat/* $(HOME)/.config/bat
