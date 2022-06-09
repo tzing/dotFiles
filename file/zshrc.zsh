@@ -75,6 +75,9 @@ zinit snippet OMZL::misc.zsh
 
 # homebrew
 export HOMEBREW_NO_AUTO_UPDATE=1
+export CFLAGS="-I$(brew --prefix)/include"
+export CPPFLAGS="-I$(brew --prefix)/include"
+export LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH"
 
 # python
 export POETRY_HOME="$HOME/.local/poetry"
