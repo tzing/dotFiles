@@ -1,5 +1,5 @@
 # load base configs
-source-file ~/.config/tmux/tmux.conf
+source-file ~/.config/tmux/config.tmux
 
 # overwrite theme
 # Powerline Gray Block - Tmux Theme

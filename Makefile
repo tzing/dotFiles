@@ -91,7 +91,7 @@ submodule.tmux.%:
 	git submodule update --init config/tmux/tmux-$*
 
 collect.tmux:
-	cp $(HOME)/.config/tmux/*.conf config/tmux/
+	cp $(HOME)/.config/tmux/*.tmux config/tmux/
 
 
 #

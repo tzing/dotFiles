@@ -100,11 +100,11 @@ cdtemp() {
 # tmux
 if type tmux > /dev/null; then
     TMUX_BIN=`which tmux`
-    alias tmux-inner="$TMUX_BIN -f $HOME/.config/tmux/tmux-inner.conf -S /tmp/tmux-$(id -u)-inner"
+    alias tmux-inner="$TMUX_BIN -f $HOME/.config/tmux/config-inner.tmux -S /tmp/tmux-$(id -u)-inner"
     if [[ -n $TMUX ]] then
         alias tmux="tmux-inner"
     else
-        alias tmux="$TMUX_BIN -f $HOME/.config/tmux/tmux.conf"
+        alias tmux="$TMUX_BIN -f $HOME/.config/tmux/config.tmux"
     fi
 fi
 
