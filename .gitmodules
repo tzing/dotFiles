@@ -1,13 +1,17 @@
-[submodule "vim/vim-plug"]
+[submodule "vim-plug"]
 	path = config/nvim/vim-plug
 	url = https://github.com/junegunn/vim-plug.git
-[submodule "config/tmux/tmux-yank"]
+	shallow = true
+[submodule "tmux-yank"]
 	path = config/tmux/tmux-yank
 	url = https://github.com/tmux-plugins/tmux-yank.git
-[submodule "config/tmux/tmux-sensible"]
+	shallow = true
+[submodule "tmux-sensible"]
 	path = config/tmux/tmux-sensible
 	url = https://github.com/tmux-plugins/tmux-sensible.git
-[submodule "config/zsh/bin"]
+	shallow = true
+[submodule "zinit"]
 	path = config/zsh/bin
 	url = https://github.com/zdharma-continuum/zinit.git
-	branch = main
+	;branch = main
+	shallow = true
