@@ -47,8 +47,10 @@ setopt auto_cd
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-# preferred editor
-export EDITOR='vim'
+# editor
+export EDITOR='nvim'
+alias vi=nvim
+alias vim=nvim
 
 # ssh
 export SSH_KEY_PATH="~/.ssh/id_ed25519"
@@ -63,7 +65,6 @@ zinit light tzing/git-ilog
 # misc
 alias du='du -h -d1'
 alias df='df -h'
-alias vi=vim
 
 if type htop > /dev/null; then
     alias top=htop

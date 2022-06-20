@@ -30,7 +30,7 @@ make install
   brew install \
     git \
     zsh \
-    vim \
+    neovim \
     tmux \
     htop \
     tldr \

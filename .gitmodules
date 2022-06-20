@@ -1,5 +1,5 @@
 [submodule "vim/vim-plug"]
-	path = vim/vim-plug
+	path = config/nvim/vim-plug
 	url = https://github.com/junegunn/vim-plug.git
 [submodule "config/tmux/tmux-yank"]
 	path = config/tmux/tmux-yank

@@ -1,31 +1,47 @@
 all: | collect install
 
-install: install.vim install.zsh install.pip install.tmux install.git install.bat
+install: install.nvim install.zsh install.pip install.tmux install.git install.bat
 	#
 
-collect: collect.vim collect.zsh collect.tmux collect.git
+collect: collect.nvim collect.zsh collect.tmux collect.git
 	#
 
+CYELLOW=$(shell tput setaf 3)
+CCYAN=$(shell tput setaf 6)
+CRESET:=$(shell tput sgr0)
+
 #
-# Section- vim
+# Section- neovim
 #
-install.vim: submodule.vim
-	# vimrc
-ifneq (,$(wildcard $(HOME)/.vimrc))
-	mv -f $(HOME)/.vimrc $(HOME)/.vimrc.bak || true
-	@echo ">>> backup .vimrc to $(HOME)/.vimrc.bak"
+DIR_NVIM_CONFIG=$(HOME)/.config/nvim
+DIR_NVIM_AUTOLOAD=$(HOME)/.local/share/nvim/site/autoload
+
+install.nvim: submodule.nvim
+# backup init.vim
+ifneq (,$(wildcard $(DIR_NVIM_CONFIG)/init.vim))
+	@echo "$(CYELLOW)Backup $(CCYAN)init.vim$(CYELLOW) to $(CCYAN)$(DIR_NVIM_CONFIG)/init.bak.vim$(CRESET)"
+	-mv -f $(DIR_NVIM_CONFIG)/init.vim $(DIR_NVIM_CONFIG)/init.bak.vim
 endif
-	cp file/vimrc.vim $(HOME)/.vimrc
 
-	# .vim folder
-	mkdir $(HOME)/.vim || true
-	cp -af vim/* $(HOME)/.vim
+# zinit folder
+	@echo "$(CYELLOW)Install configs$(CRESET)"
+	mkdir -p $(DIR_NVIM_CONFIG) || true
+	cp -af config/nvim/* $(HOME)/.config/nvim/
 
-submodule.vim:
-	git submodule update --init vim/vim-plug
+# the autoload file
+ifeq (,$(wildcard $(DIR_NVIM_AUTOLOAD)/plug.vim))
+	@echo "$(CYELLOW)Create neovim autoload file$(CRESET)"
+	mkdir -p "$(DIR_NVIM_AUTOLOAD)" || true
+	ln -s "$(DIR_NVIM_CONFIG)/vim-plug/plug.vim" "$(DIR_NVIM_AUTOLOAD)/plug.vim"
+else
+	@echo "$(CYELLOW)Autoload file existed$(CRESET)"
+endif
 
-collect.vim: $(HOME)/.vimrc
-	cp $(HOME)/.vimrc file/vimrc.vim
+submodule.nvim:
+	git submodule update --init config/nvim/vim-plug
+
+collect.nvim: $(DIR_NVIM_CONFIG)/init.vim
+	cp $(DIR_NVIM_CONFIG)/init.vim config/nvim/init.vim
 
 
 #
