@@ -56,6 +56,8 @@ make install
   * [uBlock Origin](https://addons.mozilla.org/zh-TW/firefox/addon/ublock-origin/)
   * [Multi-Account Containers](https://addons.mozilla.org/zh-TW/firefox/addon/multi-account-containers/)
   * [Facebook Container](https://addons.mozilla.org/zh-TW/firefox/addon/facebook-container/)
+  * [uBlacklist](https://addons.mozilla.org/zh-TW/firefox/addon/ublacklist/)
+    * block list: https://github.com/danny0838/content-farm-terminator/tree/gh-pages
 
 * Vim
 
