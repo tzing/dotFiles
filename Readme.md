@@ -57,7 +57,7 @@ make install
   * [Multi-Account Containers](https://addons.mozilla.org/zh-TW/firefox/addon/multi-account-containers/)
   * [Facebook Container](https://addons.mozilla.org/zh-TW/firefox/addon/facebook-container/)
   * [uBlacklist](https://addons.mozilla.org/zh-TW/firefox/addon/ublacklist/)
-    * block list: https://github.com/danny0838/content-farm-terminator/tree/gh-pages
+    * block list: https://github.com/tzing/content-farm-ublacklist/
 
 * Vim
 
