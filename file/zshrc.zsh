@@ -8,6 +8,7 @@ autoload -Uz _zinit
 
 # path
 export PATH="$HOME/.local/bin:/usr/local/sbin:/opt/homebrew/bin:$PATH"
+export FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
 
 # appearance
 zinit snippet OMZL::theme-and-appearance.zsh
