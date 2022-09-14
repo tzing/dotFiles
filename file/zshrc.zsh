@@ -120,6 +120,32 @@ if type vault > /dev/null; then
     complete -o nospace -C $(which vault) vault
 fi
 
+vault-setup() {
+    local app_name=${1:-dev-vault}
+
+    local s_error='\033[1;31m'
+    local s_highlight='\033[1;33m'
+    local s_info='\033[0;37m'
+    local s_reset='\033[0m'
+
+    printf "${s_highlight}>> login teleport${s_reset}\n"
+    tsh apps login "$app_name"
+    if [[ $? != 0 ]]; then
+        printf "${s_error}failed to login teleport${s_reset}\n"
+        return 1
+    fi
+
+    export VAULT_ADDR=$(tsh apps config -f json "$app_name" | jq -r '.uri')
+    export VAULT_CLIENT_KEY=$(tsh apps config -f json "$app_name" | jq -r '.key')
+    export VAULT_CLIENT_CERT=$(tsh apps config -f json "$app_name" | jq -r '.cert')
+    printf "${s_info}>> set VAULT_ADDR = '$VAULT_ADDR'${s_reset}\n"
+    printf "${s_info}>> set VAULT_CLIENT_KEY = '$VAULT_CLIENT_KEY'${s_reset}\n"
+    printf "${s_info}>> set VAULT_CLIENT_CERT = '$VAULT_CLIENT_CERT'${s_reset}\n"
+
+    printf "${s_highlight}>> login vault${s_reset}\n"
+    vault login -method=oidc
+}
+
 # ripgrep
 zinit ice from"gh-r" as"program" pick"ripgrep-*/rg"
 zinit light BurntSushi/ripgrep
