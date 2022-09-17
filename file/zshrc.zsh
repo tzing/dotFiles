@@ -7,7 +7,7 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 # path
-export HOMEBREW_PREFIX="$(brew --prefix)"
+export HOMEBREW_PREFIX="$(/opt/homebrew/bin/brew --prefix)"
 
 export PATH="$HOME/.local/bin:/usr/local/sbin:$HOMEBREW_PREFIX/bin:$PATH"
 export FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:$FPATH"
