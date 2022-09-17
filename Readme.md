@@ -28,27 +28,28 @@ make install
 
   ```bash
   brew install \
+    fzf \
+    gh \
     git \
-    zsh \
-    neovim \
-    tmux \
     htop \
+    neovim \
     tldr \
-    gh
+    tmux \
+    zsh
   ```
 
 * Desktop apps
 
   ```bash
   brew install --cask \
+    docker \
+    drawio \
     firefox \
     microsoft-edge \
+    obsidian \
     scroll-reverser \
     spotify \
-    visual-studio-code \
-    docker \
-    obsidian \
-    drawio
+    visual-studio-code
   ```
 
 * Firefox Addons

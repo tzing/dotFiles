@@ -7,8 +7,10 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 # path
-export PATH="$HOME/.local/bin:/usr/local/sbin:/opt/homebrew/bin:$PATH"
-export FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
+export HOMEBREW_PREFIX="$(brew --prefix)"
+
+export PATH="$HOME/.local/bin:/usr/local/sbin:$HOMEBREW_PREFIX/bin:$PATH"
+export FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:$FPATH"
 
 # appearance
 zinit snippet OMZL::theme-and-appearance.zsh
@@ -27,9 +29,7 @@ zinit snippet OMZL::key-bindings.zsh
 
 autoload -Uz compinit && compinit
 
-zinit ice from"gh-r" as"program"
-zinit light junegunn/fzf-bin
-zinit snippet "https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
+source "$HOMEBREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
 
 zinit snippet "https://raw.githubusercontent.com/MichaelAquilina/zsh-history-filter/master/zsh-history-filter.plugin.zsh"
 export HISTORY_FILTER_EXCLUDE=(
@@ -77,9 +77,9 @@ zinit snippet OMZL::misc.zsh
 
 # homebrew
 export HOMEBREW_NO_AUTO_UPDATE=1
-export CFLAGS="-I$(brew --prefix)/include"
-export CPPFLAGS="-I$(brew --prefix)/include"
-export LIBRARY_PATH="$(brew --prefix)/lib:$LIBRARY_PATH"
+export CFLAGS="-I$HOMEBREW_PREFIX/include"
+export CPPFLAGS="-I$HOMEBREW_PREFIX/include"
+export LIBRARY_PATH="$HOMEBREW_PREFIX/lib:$LIBRARY_PATH"
 
 # python
 export POETRY_HOME="$HOME/.local/poetry"
@@ -166,3 +166,6 @@ less () {
 # docker
 zinit ice as"completion"
 zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
+
+# clean up
+unset HOMEBREW_PREFIX
