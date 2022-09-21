@@ -135,9 +135,9 @@ vault-setup() {
         return 1
     fi
 
-    export VAULT_ADDR=$(tsh apps config -f json "$app_name" | jq -r '.uri')
-    export VAULT_CLIENT_KEY=$(tsh apps config -f json "$app_name" | jq -r '.key')
-    export VAULT_CLIENT_CERT=$(tsh apps config -f json "$app_name" | jq -r '.cert')
+    export VAULT_ADDR=$(tsh apps config -f uri "$app_name")
+    export VAULT_CLIENT_KEY=$(tsh apps config -f key "$app_name")
+    export VAULT_CLIENT_CERT=$(tsh apps config -f cert "$app_name")
     printf "${s_info}>> set VAULT_ADDR = '$VAULT_ADDR'${s_reset}\n"
     printf "${s_info}>> set VAULT_CLIENT_KEY = '$VAULT_CLIENT_KEY'${s_reset}\n"
     printf "${s_info}>> set VAULT_CLIENT_CERT = '$VAULT_CLIENT_CERT'${s_reset}\n"
