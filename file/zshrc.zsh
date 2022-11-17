@@ -33,12 +33,12 @@ source "$HOMEBREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
 
 zinit snippet "https://raw.githubusercontent.com/MichaelAquilina/zsh-history-filter/master/zsh-history-filter.plugin.zsh"
 export HISTORY_FILTER_EXCLUDE=(
-    "AWS_ACCESS_KEY_ID"
-    "AWS_SECRET_ACCESS_KEY"
-    "AWS_SESSION_TOKEN"
-    "AWS_SECURITY_TOKEN"
-    "STITCH_TOKEN"
-    "VAULT_TOKEN"
+	"AWS_ACCESS_KEY_ID"
+	"AWS_SECRET_ACCESS_KEY"
+	"AWS_SESSION_TOKEN"
+	"AWS_SECURITY_TOKEN"
+	"STITCH_TOKEN"
+	"VAULT_TOKEN"
 )
 
 # zsh opt
@@ -68,7 +68,7 @@ alias du='du -h -d1'
 alias df='df -h'
 
 if type htop > /dev/null; then
-    alias top=htop
+	alias top=htop
 fi
 
 zinit snippet OMZL::directories.zsh
@@ -80,6 +80,7 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 export CFLAGS="-I$HOMEBREW_PREFIX/include"
 export CPPFLAGS="-I$HOMEBREW_PREFIX/include"
 export LIBRARY_PATH="$HOMEBREW_PREFIX/lib:$LIBRARY_PATH"
+unset HOMEBREW_PREFIX
 
 # python
 export POETRY_HOME="$HOME/.local/poetry"
@@ -87,63 +88,63 @@ export PIPENV_VENV_IN_PROJECT=true
 
 # temp dir
 cdtemp() {
-    export OLD_DIR="$(pwd)"
-    export TEMP_DIR="$(mktemp -d)"
-    cd "$TEMP_DIR"
+	export OLD_DIR="$(pwd)"
+	export TEMP_DIR="$(mktemp -d)"
+	cd "$TEMP_DIR"
 
-    exittemp() {
-        cd "$OLD_DIR"
-        rm -rf "$TEMP_DIR"
-        unset OLD_DIR
-        unset TEMP_DIR
-    }
+	exittemp() {
+		cd "$OLD_DIR"
+		rm -rf "$TEMP_DIR"
+		unset OLD_DIR
+		unset TEMP_DIR
+	}
 }
 
 # tmux
 if type tmux > /dev/null; then
-    TMUX_BIN=`which tmux`
-    alias tmux-inner="$TMUX_BIN -f $HOME/.config/tmux/config-inner.tmux -S /tmp/tmux-$(id -u)-inner"
-    if [[ -n $TMUX ]] then
-        alias tmux="tmux-inner"
-    else
-        alias tmux="$TMUX_BIN -f $HOME/.config/tmux/config.tmux"
-    fi
+	TMUX_BIN=`which tmux`
+	alias tmux-inner="$TMUX_BIN -f $HOME/.config/tmux/config-inner.tmux -S /tmp/tmux-$(id -u)-inner"
+	if [[ -n $TMUX ]] then
+		alias tmux="tmux-inner"
+	else
+		alias tmux="$TMUX_BIN -f $HOME/.config/tmux/config.tmux"
+	fi
 fi
 
 # rsync
 if type rsync > /dev/null; then
-    alias rsync='rsync -rlptD -hhh --progress'
+	alias rsync='rsync -rlptD -hhh --progress'
 fi
 
 # hashicrop vault
 if type vault > /dev/null; then
-    complete -o nospace -C $(which vault) vault
+	complete -o nospace -C $(which vault) vault
 fi
 
 vault-setup() {
-    local app_name=${1:-dev-vault}
+	local app_name=${1:-dev-vault}
 
-    local s_error='\033[1;31m'
-    local s_highlight='\033[1;33m'
-    local s_info='\033[0;37m'
-    local s_reset='\033[0m'
+	local s_error='\033[1;31m'
+	local s_highlight='\033[1;33m'
+	local s_info='\033[0;37m'
+	local s_reset='\033[0m'
 
-    printf "${s_highlight}>> login teleport${s_reset}\n"
-    tsh apps login "$app_name"
-    if [[ $? != 0 ]]; then
-        printf "${s_error}failed to login teleport${s_reset}\n"
-        return 1
-    fi
+	printf "${s_highlight}>> login teleport${s_reset}\n"
+	tsh apps login "$app_name"
+	if [[ $? != 0 ]]; then
+		printf "${s_error}failed to login teleport${s_reset}\n"
+		return 1
+	fi
 
-    export VAULT_ADDR=$(tsh apps config -f uri "$app_name")
-    export VAULT_CLIENT_KEY=$(tsh apps config -f key "$app_name")
-    export VAULT_CLIENT_CERT=$(tsh apps config -f cert "$app_name")
-    printf "${s_info}>> set VAULT_ADDR = '$VAULT_ADDR'${s_reset}\n"
-    printf "${s_info}>> set VAULT_CLIENT_KEY = '$VAULT_CLIENT_KEY'${s_reset}\n"
-    printf "${s_info}>> set VAULT_CLIENT_CERT = '$VAULT_CLIENT_CERT'${s_reset}\n"
+	export VAULT_ADDR=$(tsh apps config -f uri "$app_name")
+	export VAULT_CLIENT_KEY=$(tsh apps config -f key "$app_name")
+	export VAULT_CLIENT_CERT=$(tsh apps config -f cert "$app_name")
+	printf "${s_info}>> set VAULT_ADDR = '$VAULT_ADDR'${s_reset}\n"
+	printf "${s_info}>> set VAULT_CLIENT_KEY = '$VAULT_CLIENT_KEY'${s_reset}\n"
+	printf "${s_info}>> set VAULT_CLIENT_CERT = '$VAULT_CLIENT_CERT'${s_reset}\n"
 
-    printf "${s_highlight}>> login vault${s_reset}\n"
-    vault login -method=oidc
+	printf "${s_highlight}>> login vault${s_reset}\n"
+	vault login -method=oidc
 }
 
 # ripgrep
@@ -157,15 +158,12 @@ zinit ice from"gh-r" as"program" pick"bat-*/bat"
 zinit light sharkdp/bat
 
 less () {
-    env \
-        LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
-        LESS_TERMCAP_se="$(printf '\e[0m')" \
-        bat --pager "less -ci" --paging "always" "$@"
+	env \
+		LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
+		LESS_TERMCAP_se="$(printf '\e[0m')" \
+		bat --pager "less -ci" --paging "always" "$@"
 }
 
 # docker
 zinit ice as"completion"
 zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
-
-# clean up
-unset HOMEBREW_PREFIX
