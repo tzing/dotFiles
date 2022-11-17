@@ -167,3 +167,13 @@ less () {
 # docker
 zinit ice as"completion"
 zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
+
+# netstat
+alias __netstat=$(which netstat)
+netstat() {
+	if [[ $# > 0 ]]; then
+		__netstat $@
+	else
+		__netstat -anv | awk 'NR<3 || /LISTEN/'
+	fi
+}
