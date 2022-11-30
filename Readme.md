@@ -6,8 +6,9 @@
 ## Deploy configs
 
 ```bash
-task install/env/all
+task install/all
 ```
+
 
 ## Unmanaged resources
 

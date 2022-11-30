@@ -13,6 +13,7 @@ tasks:
     desc: Update git submodules
     cmds:
       - git submodule update --init --remote
+      - git status
 
   collect:
     desc: Collect all configs
@@ -23,16 +24,16 @@ tasks:
       - collect/config/zsh
       - collect/config/neovim
 
-  install/env/all:
+  install/all:
     desc: Install all environments
     deps:
       - install/python/workspace
       - install/python/toolkit
       - install/config/git
       - install/config/bat
-      - collect/env/tmux
-      - collect/env/zsh
-      - collect/env/neovim
+      - install/env/tmux
+      - install/env/zsh
+      - install/env/neovim
 
   # helper functions
   # ---------------------------------------------------------------------------
