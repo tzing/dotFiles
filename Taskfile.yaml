@@ -1,0 +1,69 @@
+version: "3"
+
+vars:
+  PATH_WORKSPACE:
+    sh: echo "$HOME/.workspace"
+  PATH_LOCAL:
+    sh: echo "$HOME/.local"
+  PATH_LOCAL_BIN: "{{ .PATH_LOCAL }}/bin"
+
+tasks:
+  trivial/local-dir:
+    desc: Create ~/.local
+    cmds:
+      - mkdir -p {{ .PATH_LOCAL }}
+      - mkdir -p {{ .PATH_LOCAL }}/bin
+    status:
+      - '[[ -d "$HOME/.local/bin" ]]'
+
+  trivial/get-poetry:
+    desc: Install Poetry
+    cmds:
+      - curl -sSL https://install.python-poetry.org | python3 -
+      - poetry config virtualenvs.in-project true
+      - ln -s "$POETRY_HOME/bin/poetry" '{{ .PATH_LOCAL_BIN }}/poetry' || true
+    status:
+      - type poetry
+
+  install/python-workspace:
+    desc: Create ~/.workspace and install utilities
+    deps:
+      - trivial/get-poetry
+    cmds:
+      - mkdir -p {{ .PATH_WORKSPACE }}
+      - cp -vr workspace/* {{ .PATH_WORKSPACE }}/
+      - |
+        cd {{ .PATH_WORKSPACE }}
+        poetry install --sync --no-root
+      - |
+        {{- range $app := list
+              "httpx"
+              "ipython"
+              "jupyter"
+        }}
+        ln -s '{{ $.PATH_WORKSPACE }}/.venv/bin/{{ $app }}' '{{ $.PATH_LOCAL_BIN }}/{{ $app }}' || true
+        {{- end }}
+
+  collect/python-workspace:
+    desc: Collect config from workspace
+    cmds:
+      - cp {{ .PATH_WORKSPACE }}/* workspace/
+
+  install/python-toolkit:
+    desc: Install some python-based utilities
+    deps:
+      - trivial/local-dir
+    vars:
+      PATH_VENV: "{{ .PATH_LOCAL }}/python-toolkit"
+    cmds:
+      - python3 -m venv {{ .PATH_VENV }}
+      - |
+        {{ range $pip_name, $prog_name := dict
+              "black" "black"
+              "isort" "isort"
+              "awscli" "aws"
+              "pygments" "pygmentize"
+        }}
+        {{ $.PATH_VENV }}/bin/pip install {{ $pip_name }}
+        ln -s '{{ $.PATH_VENV }}/bin/{{ $prog_name }}' '{{ $.PATH_LOCAL_BIN }}/{{ $prog_name }}' || true
+        {{- end }}
