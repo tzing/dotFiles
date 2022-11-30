@@ -8,6 +8,7 @@ vars:
 
 tasks:
   # operations
+  # ---------------------------------------------------------------------------
   update/submodules:
     desc: Update git submodules
     cmds:
@@ -34,14 +35,7 @@ tasks:
       - collect/env/neovim
 
   # helper functions
-  helper/local-dir:
-    internal: true
-    cmds:
-      - mkdir -p {{ .PATH_LOCAL }}
-      - mkdir -p {{ .PATH_LOCAL_BIN }}
-    status:
-      - "[[ -d {{ .PATH_LOCAL_BIN }} ]]"
-
+  # ---------------------------------------------------------------------------
   helper/checkout-submodule:
     label: checkout-submodule[{{ .DIR }}]
     internal: true
@@ -75,59 +69,17 @@ tasks:
     cmds:
       - diff -u '{{ .OLD }}' '{{ .NEW }}' {{ .HELPER }}
 
-  # toolkit
-  install/poetry:
+  # bat
+  # ---------------------------------------------------------------------------
+  install/config/bat:
+    desc: Install bat config
     cmds:
-      - curl -sSL https://install.python-poetry.org | python3 -
-      - poetry config virtualenvs.in-project true
-      - ln -s "$POETRY_HOME/bin/poetry" '{{ .PATH_LOCAL_BIN }}/poetry' || true
-    status:
-      - type poetry
+      - task: helper/copy-config-dir
+        vars:
+          NAME: bat
 
-  install/python/workspace:
-    desc: Create ~/.workspace and install utilities
-    deps:
-      - install/poetry
-    cmds:
-      - mkdir -p {{ .PATH_WORKSPACE }}
-      - cp -vaf workspace/* {{ .PATH_WORKSPACE }}/
-      - |
-        cd {{ .PATH_WORKSPACE }}
-        poetry install --sync --no-root
-      - |
-        {{- range $app := list
-              "httpx"
-              "ipython"
-              "jupyter"
-        }}
-        ln -s '{{ $.PATH_WORKSPACE }}/.venv/bin/{{ $app }}' '{{ $.PATH_LOCAL_BIN }}/{{ $app }}' || true
-        {{- end }}
-
-  collect/python/workspace:
-    desc: Collect config from workspace
-    cmds:
-      - cp -va {{ .PATH_WORKSPACE }}/* workspace/
-
-  install/python/toolkit:
-    desc: Install some python-based utilities
-    deps:
-      - helper/local-dir
-    vars:
-      PATH_VENV: "{{ .PATH_LOCAL }}/python-toolkit"
-    cmds:
-      - python3 -m venv {{ .PATH_VENV }}
-      - |
-        {{ range $pip_name, $prog_name := dict
-              "black" "black"
-              "isort" "isort"
-              "awscli" "aws"
-              "pygments" "pygmentize"
-        }}
-        {{ $.PATH_VENV }}/bin/pip install {{ $pip_name }}
-        ln -s '{{ $.PATH_VENV }}/bin/{{ $prog_name }}' '{{ $.PATH_LOCAL_BIN }}/{{ $prog_name }}' || true
-        {{- end }}
-
-  # config: git
+  # git
+  # ---------------------------------------------------------------------------
   install/config/git:
     desc: Install git config
     cmds:
@@ -157,76 +109,8 @@ tasks:
     cmds:
       - cp -va $HOME/.gitconfig file/gitconfig
 
-  # config: bat
-  install/config/bat:
-    desc: Install bat config
-    cmds:
-      - task: helper/copy-config-dir
-        vars:
-          NAME: bat
-
-  # config: tmux
-  install/env/tmux:
-    desc: Install tmux config
-    deps:
-      - task: helper/checkout-submodule
-        vars:
-          DIR: config/tmux/tmux-sensible
-      - task: helper/checkout-submodule
-        vars:
-          DIR: config/tmux/tmux-yank
-    cmds:
-      - task: helper/copy-config-dir
-        vars:
-          NAME: tmux
-
-  collect/config/tmux:
-    desc: Collect tmux config
-    cmds:
-      - cp -va {{ .PATH_CONFIG }}/tmux/*.tmux config/tmux/
-
-  # config: zsh
-  install/env/zsh:
-    desc: Setup zsh environment
-    deps:
-      - task: helper/checkout-submodule
-        vars:
-          DIR: config/zsh/bin
-    cmds:
-      - task: helper/copy-config-dir
-        vars:
-          NAME: zsh
-      - task: install/config/zsh
-
-  install/config/zsh:
-    desc: Install zsh config
-    cmds:
-      - task: diff/config/zsh
-      - task: helper/copy-config-file
-        vars:
-          SOURCE: file/zshrc.zsh
-          DESTINATION: "{{ .HOME }}/.zshrc"
-          BACKUP: "{{ .HOME }}/.zshrc.bak.zsh"
-
-  diff/config/zsh:
-    desc: Show zsh config diff between the currently used one and the one in this repo
-    cmds:
-      - task: helper/show-diff
-        vars:
-          OLD: file/zshrc.zsh
-          NEW: "{{ .HOME }}/.zshrc"
-
-  collect/config/zsh:
-    desc: Collect zsh config
-    cmds:
-      - cp -va "$HOME/.zshrc" 'file/zshrc.zsh'
-
-  update/plugin/zsh:
-    desc: Update zsh plugins
-    cmds:
-      - zinit update
-
-  # config: neovim
+  # neovim
+  # ---------------------------------------------------------------------------
   install/env/neovim:
     desc: Setup neovim environment
     deps:
@@ -280,3 +164,129 @@ tasks:
     interactive: true
     cmds:
       - nvim '+PlugUpdate!'
+
+  # tmux
+  # ---------------------------------------------------------------------------
+  install/env/tmux:
+    desc: Install tmux config
+    deps:
+      - task: helper/checkout-submodule
+        vars:
+          DIR: config/tmux/tmux-sensible
+      - task: helper/checkout-submodule
+        vars:
+          DIR: config/tmux/tmux-yank
+    cmds:
+      - task: helper/copy-config-dir
+        vars:
+          NAME: tmux
+
+  collect/config/tmux:
+    desc: Collect tmux config
+    cmds:
+      - cp -va {{ .PATH_CONFIG }}/tmux/*.tmux config/tmux/
+
+  # toolkit
+  # ---------------------------------------------------------------------------
+  install/python/toolkit:
+    desc: Install some python-based utilities
+    deps:
+      - helper/local-dir
+    vars:
+      PATH_VENV: "{{ .PATH_LOCAL }}/python-toolkit"
+    cmds:
+      - python3 -m venv {{ .PATH_VENV }}
+      - |
+        {{ range $pip_name, $prog_name := dict
+              "black" "black"
+              "isort" "isort"
+              "awscli" "aws"
+              "pygments" "pygmentize"
+        }}
+        {{ $.PATH_VENV }}/bin/pip install {{ $pip_name }}
+        ln -s '{{ $.PATH_VENV }}/bin/{{ $prog_name }}' '{{ $.PATH_LOCAL_BIN }}/{{ $prog_name }}' || true
+        {{- end }}
+
+  helper/local-dir:
+    internal: true
+    cmds:
+      - mkdir -p {{ .PATH_LOCAL }}
+      - mkdir -p {{ .PATH_LOCAL_BIN }}
+    status:
+      - "[[ -d {{ .PATH_LOCAL_BIN }} ]]"
+
+  # workspace
+  # ---------------------------------------------------------------------------
+  install/poetry:
+    cmds:
+      - curl -sSL https://install.python-poetry.org | python3 -
+      - poetry config virtualenvs.in-project true
+      - ln -s "$POETRY_HOME/bin/poetry" '{{ .PATH_LOCAL_BIN }}/poetry' || true
+    status:
+      - type poetry
+
+  install/python/workspace:
+    desc: Create ~/.workspace and install utilities
+    deps:
+      - install/poetry
+    cmds:
+      - mkdir -p {{ .PATH_WORKSPACE }}
+      - cp -vaf workspace/* {{ .PATH_WORKSPACE }}/
+      - |
+        cd {{ .PATH_WORKSPACE }}
+        poetry install --sync --no-root
+      - |
+        {{- range $app := list
+              "httpx"
+              "ipython"
+              "jupyter"
+        }}
+        ln -s '{{ $.PATH_WORKSPACE }}/.venv/bin/{{ $app }}' '{{ $.PATH_LOCAL_BIN }}/{{ $app }}' || true
+        {{- end }}
+
+  collect/python/workspace:
+    desc: Collect config from workspace
+    cmds:
+      - cp -va {{ .PATH_WORKSPACE }}/* workspace/
+
+  # zsh
+  # ---------------------------------------------------------------------------
+  install/env/zsh:
+    desc: Setup zsh environment
+    deps:
+      - task: helper/checkout-submodule
+        vars:
+          DIR: config/zsh/bin
+    cmds:
+      - task: helper/copy-config-dir
+        vars:
+          NAME: zsh
+      - task: install/config/zsh
+
+  install/config/zsh:
+    desc: Install zsh config
+    cmds:
+      - task: diff/config/zsh
+      - task: helper/copy-config-file
+        vars:
+          SOURCE: file/zshrc.zsh
+          DESTINATION: "{{ .HOME }}/.zshrc"
+          BACKUP: "{{ .HOME }}/.zshrc.bak.zsh"
+
+  diff/config/zsh:
+    desc: Show zsh config diff between the currently used one and the one in this repo
+    cmds:
+      - task: helper/show-diff
+        vars:
+          OLD: file/zshrc.zsh
+          NEW: "{{ .HOME }}/.zshrc"
+
+  collect/config/zsh:
+    desc: Collect zsh config
+    cmds:
+      - cp -va "$HOME/.zshrc" 'file/zshrc.zsh'
+
+  update/plugin/zsh:
+    desc: Update zsh plugins
+    cmds:
+      - zinit update
