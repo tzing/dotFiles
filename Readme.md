@@ -31,6 +31,7 @@ make install
     fzf \
     gh \
     git \
+    go-task \
     htop \
     neovim \
     tldr \
@@ -77,6 +78,6 @@ make install
 * [Poetry](https://github.com/python-poetry/poetry)
 
   ```bash
-  curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+  curl -sSL https://install.python-poetry.org | python3 -
   poetry config virtualenvs.in-project true
   ```
