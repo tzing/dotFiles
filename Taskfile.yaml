@@ -221,6 +221,11 @@ tasks:
     cmds:
       - cp -va "$HOME/.zshrc" 'file/zshrc.zsh'
 
+  update/plugin/zsh:
+    desc: Update zsh plugins
+    cmds:
+      - zinit update
+
   # config: neovim
   install/env/neovim:
     desc: Setup neovim environment
@@ -255,6 +260,7 @@ tasks:
           SOURCE: config/nvim/init.vim
           DESTINATION: "{{ .PATH_CONFIG }}/nvim/init.vim"
           BACKUP: "{{ .PATH_CONFIG }}/nvim/init.bak.vim"
+      - task: update/plugin/neovim
 
   diff/config/neovim:
     desc: Show neovim config diff between the currently used one and the one in this repo
@@ -268,3 +274,9 @@ tasks:
     desc: Collect neovim config
     cmds:
       - cp -va '{{ .PATH_CONFIG }}/nvim/init.vim' 'config/nvim/init.vim'
+
+  update/plugin/neovim:
+    desc: Update neovim plugins
+    interactive: true
+    cmds:
+      - nvim '+PlugUpdate!'

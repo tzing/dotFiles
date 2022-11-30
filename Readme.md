@@ -62,21 +62,8 @@ task install/env/all
 
 * Vim
 
-  * [vim-plug](https://github.com/junegunn/vim-plug)
-
-    ```bash
-    vim +PlugInstall!
-    ```
-
   * [Language server](https://github.com/prabirshrestha/vim-lsp/wiki/Servers)
 
     ```bash
     pip install python-language-server
     ```
-
-* [Poetry](https://github.com/python-poetry/poetry)
-
-  ```bash
-  curl -sSL https://install.python-poetry.org | python3 -
-  poetry config virtualenvs.in-project true
-  ```
