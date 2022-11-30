@@ -1,23 +1,82 @@
 version: "3"
 
 vars:
-  PATH_WORKSPACE:
-    sh: echo "$HOME/.workspace"
-  PATH_LOCAL:
-    sh: echo "$HOME/.local"
+  PATH_WORKSPACE: "{{ .HOME }}/.workspace"
+  PATH_LOCAL: "{{ .HOME }}/.local"
   PATH_LOCAL_BIN: "{{ .PATH_LOCAL }}/bin"
+  PATH_CONFIG: "{{ .HOME }}/.config"
 
 tasks:
-  trivial/local-dir:
-    desc: Create ~/.local
+  # operations
+  update/submodules:
+    desc: Update git submodules
+    cmds:
+      - git submodule update --init --remote
+
+  collect:
+    desc: Collect all configs
+    deps:
+      - collect/python/workspace
+      - collect/config/git
+      - collect/config/tmux
+      - collect/config/zsh
+      - collect/config/neovim
+
+  install/env/all:
+    desc: Install all environments
+    deps:
+      - install/python/workspace
+      - install/python/toolkit
+      - install/config/git
+      - install/config/bat
+      - collect/env/tmux
+      - collect/env/zsh
+      - collect/env/neovim
+
+  # helper functions
+  helper/local-dir:
+    internal: true
     cmds:
       - mkdir -p {{ .PATH_LOCAL }}
-      - mkdir -p {{ .PATH_LOCAL }}/bin
+      - mkdir -p {{ .PATH_LOCAL_BIN }}
     status:
-      - '[[ -d "$HOME/.local/bin" ]]'
+      - "[[ -d {{ .PATH_LOCAL_BIN }} ]]"
 
-  trivial/get-poetry:
-    desc: Install Poetry
+  helper/checkout-submodule:
+    label: checkout-submodule[{{ .DIR }}]
+    internal: true
+    cmds:
+      - git submodule update --init {{ .DIR }}
+
+  helper/copy-config-dir:
+    label: copy-config-dir[{{ .NAME }}]
+    internal: true
+    cmds:
+      - mkdir -p '{{ .PATH_CONFIG }}/{{ .NAME }}'
+      - cp -vaf 'config/{{ .NAME }}/'* '{{ .PATH_CONFIG }}/{{ .NAME }}/'
+
+  helper/copy-config-file:
+    label: copy-config-file[{{ .DESTINATION }}]
+    internal: true
+    cmds:
+      - mv -vf '{{ .DESTINATION }}' '{{ .BACKUP }}' || true
+      - cp -va '{{ .SOURCE }}' '{{ .DESTINATION }}'
+    status:
+      - diff '{{ .SOURCE }}' '{{ .DESTINATION }}'
+
+  helper/show-diff:
+    internal: true
+    vars:
+      HELPER:
+        sh: |
+          if type diff-so-fancy > /dev/null; then
+            echo '| diff-so-fancy'
+          fi
+    cmds:
+      - diff -u '{{ .OLD }}' '{{ .NEW }}' {{ .HELPER }}
+
+  # toolkit
+  install/poetry:
     cmds:
       - curl -sSL https://install.python-poetry.org | python3 -
       - poetry config virtualenvs.in-project true
@@ -25,13 +84,13 @@ tasks:
     status:
       - type poetry
 
-  install/python-workspace:
+  install/python/workspace:
     desc: Create ~/.workspace and install utilities
     deps:
-      - trivial/get-poetry
+      - install/poetry
     cmds:
       - mkdir -p {{ .PATH_WORKSPACE }}
-      - cp -vr workspace/* {{ .PATH_WORKSPACE }}/
+      - cp -vaf workspace/* {{ .PATH_WORKSPACE }}/
       - |
         cd {{ .PATH_WORKSPACE }}
         poetry install --sync --no-root
@@ -44,15 +103,15 @@ tasks:
         ln -s '{{ $.PATH_WORKSPACE }}/.venv/bin/{{ $app }}' '{{ $.PATH_LOCAL_BIN }}/{{ $app }}' || true
         {{- end }}
 
-  collect/python-workspace:
+  collect/python/workspace:
     desc: Collect config from workspace
     cmds:
-      - cp {{ .PATH_WORKSPACE }}/* workspace/
+      - cp -va {{ .PATH_WORKSPACE }}/* workspace/
 
-  install/python-toolkit:
+  install/python/toolkit:
     desc: Install some python-based utilities
     deps:
-      - trivial/local-dir
+      - helper/local-dir
     vars:
       PATH_VENV: "{{ .PATH_LOCAL }}/python-toolkit"
     cmds:
@@ -68,7 +127,144 @@ tasks:
         ln -s '{{ $.PATH_VENV }}/bin/{{ $prog_name }}' '{{ $.PATH_LOCAL_BIN }}/{{ $prog_name }}' || true
         {{- end }}
 
-  update/submodules:
-    desc: Update git submodules
+  # config: git
+  install/config/git:
+    desc: Install git config
     cmds:
-      - git submodule update --init --remote
+      - task: helper/copy-config-file
+        vars:
+          SOURCE: file/gitconfig
+          DESTINATION: "{{ .HOME }}/.gitconfig"
+          BACKUP: "{{ .HOME }}/.bak.gitconfig"
+      - task: install/config/git/gitignore
+
+  install/config/git/gitignore:
+    cmds:
+      - mkdir -p {{ .PATH_CONFIG }}/git
+      - curl https://www.toptal.com/developers/gitignore/api/macos > {{ .PATH_CONFIG }}/git/macOS.gitignore
+      - git config --global core.excludesfile {{ .PATH_CONFIG }}/git/macOS.gitignore
+
+  diff/config/git:
+    desc: Show git config diff between the currently used one and the one in this repo
+    cmds:
+      - task: helper/show-diff
+        vars:
+          OLD: file/gitconfig
+          NEW: "{{ .HOME }}/.gitconfig"
+
+  collect/config/git:
+    desc: Collect git configs
+    cmds:
+      - cp -va $HOME/.gitconfig file/gitconfig
+
+  # config: bat
+  install/config/bat:
+    desc: Install bat config
+    cmds:
+      - task: helper/copy-config-dir
+        vars:
+          NAME: bat
+
+  # config: tmux
+  install/env/tmux:
+    desc: Install tmux config
+    deps:
+      - task: helper/checkout-submodule
+        vars:
+          DIR: config/tmux/tmux-sensible
+      - task: helper/checkout-submodule
+        vars:
+          DIR: config/tmux/tmux-yank
+    cmds:
+      - task: helper/copy-config-dir
+        vars:
+          NAME: tmux
+
+  collect/config/tmux:
+    desc: Collect tmux config
+    cmds:
+      - cp -va {{ .PATH_CONFIG }}/tmux/*.tmux config/tmux/
+
+  # config: zsh
+  install/env/zsh:
+    desc: Setup zsh environment
+    deps:
+      - task: helper/checkout-submodule
+        vars:
+          DIR: config/zsh/bin
+    cmds:
+      - task: helper/copy-config-dir
+        vars:
+          NAME: zsh
+      - task: install/config/zsh
+
+  install/config/zsh:
+    desc: Install zsh config
+    cmds:
+      - task: diff/config/zsh
+      - task: helper/copy-config-file
+        vars:
+          SOURCE: file/zshrc.zsh
+          DESTINATION: "{{ .HOME }}/.zshrc"
+          BACKUP: "{{ .HOME }}/.zshrc.bak.zsh"
+
+  diff/config/zsh:
+    desc: Show zsh config diff between the currently used one and the one in this repo
+    cmds:
+      - task: helper/show-diff
+        vars:
+          OLD: file/zshrc.zsh
+          NEW: "{{ .HOME }}/.zshrc"
+
+  collect/config/zsh:
+    desc: Collect zsh config
+    cmds:
+      - cp -va "$HOME/.zshrc" 'file/zshrc.zsh'
+
+  # config: neovim
+  install/env/neovim:
+    desc: Setup neovim environment
+    deps:
+      - task: helper/checkout-submodule
+        vars:
+          DIR: config/nvim/vim-plug
+      - install/config/neovim
+    cmds:
+      - task: helper/copy-config-dir
+        vars:
+          NAME: nvim
+      - task: helper/install-neovim-autoload
+
+  helper/install-neovim-autoload:
+    internal: true
+    vars:
+      PATH_AUTOLOAD: "{{ .PATH_LOCAL }}/share/nvim/site/autoload"
+      TARGET: "{{ .PATH_AUTOLOAD }}/plug.vim"
+    cmds:
+      - mkdir -p {{ .PATH_AUTOLOAD }}
+      - ln -s '{{ .PATH_CONFIG }}/nvim/vim-plug/plug.vim' '{{ .TARGET }}'
+    status:
+      - "[[ -L {{ .TARGET }} ]]"
+
+  install/config/neovim:
+    desc: Install neovim config
+    cmds:
+      - task: diff/config/neovim
+      - task: helper/copy-config-file
+        vars:
+          SOURCE: config/nvim/init.vim
+          DESTINATION: "{{ .PATH_CONFIG }}/nvim/init.vim"
+          BACKUP: "{{ .PATH_CONFIG }}/nvim/init.bak.vim"
+
+  diff/config/neovim:
+    desc: Show neovim config diff between the currently used one and the one in this repo
+    cmds:
+      - task: helper/show-diff
+        vars:
+          OLD: config/nvim/init.vim
+          NEW: "{{ .PATH_CONFIG }}/nvim/init.vim"
+
+  collect/config/neovim:
+    desc: Collect neovim config
+    cmds:
+      - cp -va '{{ .PATH_CONFIG }}/nvim/init.vim' 'config/nvim/init.vim'
