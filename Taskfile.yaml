@@ -35,6 +35,7 @@ tasks:
       - install/env/neovim
       - install/env/tmux
       - install/env/zsh
+      - install/git-ilog
       - install/python/toolkit
       - install/python/workspace
 
@@ -89,6 +90,7 @@ tasks:
   install/config/git:
     desc: Install git config
     cmds:
+      - task: diff/config/git
       - task: helper/copy-config-file
         vars:
           SOURCE: file/gitconfig
@@ -114,6 +116,15 @@ tasks:
     desc: Collect git configs
     cmds:
       - cp -va '{{ .HOME }}/.gitconfig' 'file/gitconfig'
+
+  # git-ilog
+  # ---------------------------------------------------------------------------
+  install/git-ilog:
+    desc: Install git-ilog script
+    cmds:
+      - cp -va 'file/git-ilog.zsh' '{{ .PATH_LOCAL_BIN }}/git-ilog'
+    status:
+      - "[[ -a '{{ .PATH_LOCAL_BIN }}/git-ilog' ]]"
 
   # k9s
   # ---------------------------------------------------------------------------

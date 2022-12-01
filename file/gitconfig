@@ -38,9 +38,6 @@
 [fetch]
 	prune = true
 
-[ilog]
-	format = %C(auto)%h%d %s %C(dim green)%cr%C(reset)
-
 [alias]
 	tree = ilog --all
 

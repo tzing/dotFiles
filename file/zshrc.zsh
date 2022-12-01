@@ -56,10 +56,6 @@ alias vim=nvim
 # ssh
 export SSH_KEY_PATH="~/.ssh/id_ed25519"
 
-# git
-zinit ice as"program" pick"git-ilog"
-zinit light tzing/git-ilog
-
 # misc
 alias du='du -h -d1'
 alias df='df -h'
