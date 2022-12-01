@@ -57,9 +57,6 @@ alias vim=nvim
 export SSH_KEY_PATH="~/.ssh/id_ed25519"
 
 # git
-zinit ice as"program" pick"diff-so-fancy"
-zinit light so-fancy/diff-so-fancy
-
 zinit ice as"program" pick"git-ilog"
 zinit light tzing/git-ilog
 

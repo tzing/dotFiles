@@ -69,8 +69,8 @@ tasks:
     vars:
       HELPER:
         sh: |
-          if type diff-so-fancy > /dev/null; then
-            echo '| diff-so-fancy'
+          if type delta > /dev/null; then
+            echo '| delta'
           fi
     cmds:
       - diff -u '{{ .OLD }}' '{{ .NEW }}' {{ .HELPER }}
@@ -107,8 +107,8 @@ tasks:
     cmds:
       - task: helper/show-diff
         vars:
-          OLD: file/gitconfig
-          NEW: "{{ .HOME }}/.gitconfig"
+          NEW: file/gitconfig
+          OLD: "{{ .HOME }}/.gitconfig"
 
   collect/config/git:
     desc: Collect git configs
@@ -130,8 +130,8 @@ tasks:
     cmds:
       - task: helper/show-diff
         vars:
-          OLD: config/k9s/config.yml
-          NEW: "{{ .PATH_APPLICATION_SUPPORT }}/k9s/config.yml"
+          NEW: config/k9s/config.yml
+          OLD: "{{ .PATH_APPLICATION_SUPPORT }}/k9s/config.yml"
 
   collect/config/k9s:
     desc: Collect k9s configs
@@ -180,8 +180,8 @@ tasks:
     cmds:
       - task: helper/show-diff
         vars:
-          OLD: config/nvim/init.vim
-          NEW: "{{ .PATH_CONFIG }}/nvim/init.vim"
+          NEW: config/nvim/init.vim
+          OLD: "{{ .PATH_CONFIG }}/nvim/init.vim"
 
   collect/config/neovim:
     desc: Collect neovim config
@@ -307,8 +307,8 @@ tasks:
     cmds:
       - task: helper/show-diff
         vars:
-          OLD: file/zshrc.zsh
-          NEW: "{{ .HOME }}/.zshrc"
+          NEW: file/zshrc.zsh
+          OLD: "{{ .HOME }}/.zshrc"
 
   collect/config/zsh:
     desc: Collect zsh config

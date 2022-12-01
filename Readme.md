@@ -31,6 +31,7 @@ task install/all
     fzf \
     gh \
     git \
+    git-delta \
     go-task \
     htop \
     neovim \

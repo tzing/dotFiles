@@ -3,7 +3,7 @@
 	email = tzingshih@gmail.com
 
 [core]
-	pager = diff-so-fancy | less --tabs=4 -RFX
+	pager = delta
 	editor = nvim
 
 [init]
@@ -17,12 +17,6 @@
 
 [color]
 	ui = true
-
-[color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
 
 [color "diff"]
 	meta = yellow
@@ -44,10 +38,6 @@
 [fetch]
 	prune = true
 
-[diff-so-fancy]
-	markEmptyLines = false
-	stripLeadingSymbols = false
-
 [ilog]
 	format = %C(auto)%h%d %s %C(dim green)%cr%C(reset)
 
@@ -56,3 +46,26 @@
 
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+
+[delta]
+	file-style = yellow
+	file-decoration-style = yellow underline
+
+	hunk-label = @@
+	hunk-header-file-style = magenta bold
+	hunk-header-line-number-style = magenta dim
+	hunk-header-style = file line-number brightblack
+	hunk-header-decoration-style = hidden
+
+	keep-plus-minus-markers = true
+
+	plus-style = green bold
+	plus-emph-style = green reverse
+
+	minus-style = red dim
+	minus-emph-style = red reverse
+
+	syntax-theme = base16
+
+	blame-timestamp-output-format = %F %H:%M:%S %z
+	blame-code-style = syntax
