@@ -5,6 +5,7 @@ vars:
   PATH_LOCAL: "{{ .HOME }}/.local"
   PATH_LOCAL_BIN: "{{ .PATH_LOCAL }}/bin"
   PATH_CONFIG: "{{ .HOME }}/.config"
+  PATH_APPLICATION_SUPPORT: "{{ .HOME }}/Library/Application Support"
 
 tasks:
   # operations
@@ -18,22 +19,24 @@ tasks:
   collect:
     desc: Collect all configs
     deps:
-      - collect/python/workspace
       - collect/config/git
+      - collect/config/k9s
+      - collect/config/neovim
       - collect/config/tmux
       - collect/config/zsh
-      - collect/config/neovim
+      - collect/python/workspace
 
   install/all:
     desc: Install all environments
     deps:
-      - install/python/workspace
-      - install/python/toolkit
-      - install/config/git
       - install/config/bat
+      - install/config/git
+      - install/config/k9s
+      - install/env/neovim
       - install/env/tmux
       - install/env/zsh
-      - install/env/neovim
+      - install/python/toolkit
+      - install/python/workspace
 
   # helper functions
   # ---------------------------------------------------------------------------
@@ -46,9 +49,11 @@ tasks:
   helper/copy-config-dir:
     label: copy-config-dir[{{ .NAME }}]
     internal: true
+    vars:
+      DIR: "{{ .DIR | default .PATH_CONFIG }}"
     cmds:
-      - mkdir -p '{{ .PATH_CONFIG }}/{{ .NAME }}'
-      - cp -vaf 'config/{{ .NAME }}/'* '{{ .PATH_CONFIG }}/{{ .NAME }}/'
+      - mkdir -p '{{ .DIR }}/{{ .NAME }}'
+      - cp -vaf 'config/{{ .NAME }}/'* '{{ .DIR }}/{{ .NAME }}/'
 
   helper/copy-config-file:
     label: copy-config-file[{{ .DESTINATION }}]
@@ -108,7 +113,30 @@ tasks:
   collect/config/git:
     desc: Collect git configs
     cmds:
-      - cp -va $HOME/.gitconfig file/gitconfig
+      - cp -va '{{ .HOME }}/.gitconfig' 'file/gitconfig'
+
+  # k9s
+  # ---------------------------------------------------------------------------
+  install/config/k9s:
+    desc: Install k9s config
+    cmds:
+      - task: helper/copy-config-dir
+        vars:
+          NAME: k9s
+          DIR: "{{ .PATH_APPLICATION_SUPPORT }}"
+
+  diff/config/k9s:
+    desc: Show k9s config diff between the currently used one and the one in this repo
+    cmds:
+      - task: helper/show-diff
+        vars:
+          OLD: config/k9s/config.yml
+          NEW: "{{ .PATH_APPLICATION_SUPPORT }}/k9s/config.yml"
+
+  collect/config/k9s:
+    desc: Collect k9s configs
+    cmds:
+      - cp -va '{{ .PATH_APPLICATION_SUPPORT }}/k9s/config.yml' 'config/k9s/config.yml'
 
   # neovim
   # ---------------------------------------------------------------------------
