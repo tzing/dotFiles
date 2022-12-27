@@ -38,6 +38,7 @@ tasks:
       - install/git-ilog
       - install/python/toolkit
       - install/python/workspace
+      - install/randn
 
   # helper functions
   # ---------------------------------------------------------------------------
@@ -246,6 +247,13 @@ tasks:
         {{ $.PATH_VENV }}/bin/pip install {{ $pip_name }}
         ln -s '{{ $.PATH_VENV }}/bin/{{ $prog_name }}' '{{ $.PATH_LOCAL_BIN }}/{{ $prog_name }}' || true
         {{- end }}
+
+  install/randn:
+    desc: Install `randn` script
+    cmds:
+      - cp -va 'bin/randn' '{{ .PATH_LOCAL_BIN }}/randn'
+    status:
+      - type randn
 
   helper/local-dir:
     internal: true
