@@ -75,7 +75,14 @@ tasks:
             echo '| delta'
           fi
     cmds:
-      - diff -u '{{ .OLD }}' '{{ .NEW }}' {{ .HELPER }}
+      - |
+        if [[ ! -f '{{ .OLD }}' ]]; then
+          echo 'Left side ({{ .OLD }}) not exists'
+        elif [[ ! -f '{{ .NEW }}' ]]; then
+          echo 'Right side ({{ .NEW }}) not exists'
+        else
+          diff -u '{{ .OLD }}' '{{ .NEW }}' {{ .HELPER }}
+        fi
 
   # bat
   # ---------------------------------------------------------------------------
