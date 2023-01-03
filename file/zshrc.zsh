@@ -7,10 +7,13 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 # path
-export HOMEBREW_PREFIX="$(/opt/homebrew/bin/brew --prefix)"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+	export HOMEBREW_PREFIX="$(/opt/homebrew/bin/brew --prefix)"
+	export PATH="$HOMEBREW_PREFIX/bin:$PATH"
+	export FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:$FPATH"
+fi
 
-export PATH="$HOME/.local/bin:/usr/local/sbin:$HOMEBREW_PREFIX/bin:$PATH"
-export FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:$FPATH"
+export PATH="$HOME/.local/bin:/usr/local/sbin:$PATH"
 
 # appearance
 zinit snippet OMZL::theme-and-appearance.zsh
@@ -29,7 +32,9 @@ zinit snippet OMZL::key-bindings.zsh
 
 autoload -Uz compinit && compinit
 
-source "$HOMEBREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+	source "$HOMEBREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
+fi
 
 zinit snippet "https://raw.githubusercontent.com/MichaelAquilina/zsh-history-filter/master/zsh-history-filter.plugin.zsh"
 export HISTORY_FILTER_EXCLUDE=(
@@ -69,11 +74,13 @@ zinit snippet OMZL::functions.zsh  # for OMZL::misc.zsh
 zinit snippet OMZL::misc.zsh
 
 # homebrew
-export HOMEBREW_NO_AUTO_UPDATE=1
-export CFLAGS="-I$HOMEBREW_PREFIX/include"
-export CPPFLAGS="-I$HOMEBREW_PREFIX/include"
-export LIBRARY_PATH="$HOMEBREW_PREFIX/lib:$LIBRARY_PATH"
-unset HOMEBREW_PREFIX
+if [[ "$OSTYPE" == "darwin"* ]]; then
+	export HOMEBREW_NO_AUTO_UPDATE=1
+	export CFLAGS="-I$HOMEBREW_PREFIX/include"
+	export CPPFLAGS="-I$HOMEBREW_PREFIX/include"
+	export LIBRARY_PATH="$HOMEBREW_PREFIX/lib:$LIBRARY_PATH"
+	unset HOMEBREW_PREFIX
+fi
 
 # python
 export POETRY_HOME="$HOME/.local/poetry"
