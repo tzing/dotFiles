@@ -184,7 +184,6 @@ tasks:
       - "[[ -L {{ .TARGET }} ]]"
 
   install/config/neovim:
-    desc: Install neovim config
     cmds:
       - task: diff/config/neovim
       - task: helper/copy-config-file
@@ -212,6 +211,8 @@ tasks:
     interactive: true
     cmds:
       - nvim '+PlugUpdate!'
+    status:
+      - "[[ -n $SKIP_INTERACTIVE ]]"
 
   # tmux
   # ---------------------------------------------------------------------------
@@ -319,7 +320,6 @@ tasks:
       - task: install/config/zsh
 
   install/config/zsh:
-    desc: Install zsh config
     cmds:
       - task: diff/config/zsh
       - task: helper/copy-config-file
