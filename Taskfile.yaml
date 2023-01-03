@@ -57,10 +57,24 @@ tasks:
       - mkdir -p '{{ .DIR }}/{{ .NAME }}'
       - cp -vaf 'config/{{ .NAME }}/'* '{{ .DIR }}/{{ .NAME }}/'
 
+  helper/ensure-config-file-dir:
+    internal: true
+    vars:
+      DIR:
+        sh: dirname {{ .FILE }}
+    status:
+      - >
+        [[ -d {{ .DIR }} ]]
+    cmds:
+      - mkdir -p {{ .DIR }}
+
   helper/copy-config-file:
     label: copy-config-file[{{ .DESTINATION }}]
     internal: true
     cmds:
+      - task: helper/ensure-config-file-dir
+        vars:
+          FILE: "{{ .DESTINATION }}"
       - mv -vf '{{ .DESTINATION }}' '{{ .BACKUP }}' || true
       - cp -va '{{ .SOURCE }}' '{{ .DESTINATION }}'
     status:
