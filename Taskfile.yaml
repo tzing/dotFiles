@@ -47,6 +47,8 @@ tasks:
     internal: true
     cmds:
       - git submodule update --init {{ .DIR }}
+    status:
+      - "[[ -n $SKIP_SUBMODULE_CHECKOUT ]]"
 
   helper/copy-config-dir:
     label: copy-config-dir[{{ .NAME }}]
@@ -58,13 +60,13 @@ tasks:
       - cp -vaf 'config/{{ .NAME }}/'* '{{ .DIR }}/{{ .NAME }}/'
 
   helper/ensure-config-file-dir:
+    label: ensure-dir[{{ .DIR }}]
     internal: true
     vars:
       DIR:
         sh: dirname {{ .FILE }}
     status:
-      - >
-        [[ -d {{ .DIR }} ]]
+      - "[[ -d {{ .DIR }} ]]"
     cmds:
       - mkdir -p {{ .DIR }}
 
