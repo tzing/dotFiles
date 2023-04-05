@@ -9,7 +9,7 @@ autoload -Uz _zinit
 # path
 if [[ "$OSTYPE" == "darwin"* ]]; then
 	export HOMEBREW_PREFIX="$(/opt/homebrew/bin/brew --prefix)"
-	export PATH="$HOMEBREW_PREFIX/bin:$PATH"
+	export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
 	export FPATH="$HOMEBREW_PREFIX/share/zsh/site-functions:$FPATH"
 fi
 
@@ -75,7 +75,7 @@ zinit snippet OMZL::misc.zsh
 
 # homebrew
 if [[ "$OSTYPE" == "darwin"* ]]; then
-	export HOMEBREW_NO_AUTO_UPDATE=1
+	export HOMEBREW_NO_GOOGLE_ANALYTICS=1
 	export CFLAGS="-I$HOMEBREW_PREFIX/include"
 	export CPPFLAGS="-I$HOMEBREW_PREFIX/include"
 	export LIBRARY_PATH="$HOMEBREW_PREFIX/lib:$LIBRARY_PATH"
@@ -151,3 +151,9 @@ netstat() {
 		__netstat -anv | awk 'NR<3 || /LISTEN/'
 	fi
 }
+
+# kubectl
+alias kube=kubectl
+
+# watch
+alias watch=viddy
