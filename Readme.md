@@ -34,6 +34,7 @@ task install/all
     git-delta \
     go-task \
     htop \
+    kubectx \
     neovim \
     tldr \
     tmux \
@@ -60,7 +61,12 @@ task install/all
   * [Multi-Account Containers](https://addons.mozilla.org/zh-TW/firefox/addon/multi-account-containers/)
   * [Facebook Container](https://addons.mozilla.org/zh-TW/firefox/addon/facebook-container/)
   * [uBlacklist](https://addons.mozilla.org/zh-TW/firefox/addon/ublacklist/)
-    * block list: https://github.com/tzing/content-farm-ublacklist/
+
+    block list:
+
+    - [danny0838/content-farm-terminator](https://danny0838.github.io/content-farm-terminator/zh/subscriptions-ublacklist)
+    - [arosh/ublacklist-stackoverflow-translation](https://github.com/arosh/ublacklist-stackoverflow-translation)
+    - [arosh/ublacklist-github-translation](https://github.com/arosh/ublacklist-github-translation)
 
 * Vim
 
