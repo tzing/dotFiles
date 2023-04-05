@@ -267,6 +267,7 @@ tasks:
               "isort" "isort"
               "awscli" "aws"
               "pygments" "pygmentize"
+              "bump2version" "bump2version"
         }}
         {{ $.PATH_VENV }}/bin/pip install {{ $pip_name }}
         ln -s '{{ $.PATH_VENV }}/bin/{{ $prog_name }}' '{{ $.PATH_LOCAL_BIN }}/{{ $prog_name }}' || true
