@@ -267,6 +267,7 @@ tasks:
               "isort" "isort"
               "awscli" "aws"
               "pygments" "pygmentize"
+              "bumpver" "bumpver"
               "bump2version" "bump2version"
         }}
         {{ $.PATH_VENV }}/bin/pip install {{ $pip_name }}
