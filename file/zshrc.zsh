@@ -36,15 +36,23 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 	source "$HOMEBREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
 fi
 
+# credentials
 zinit snippet "https://raw.githubusercontent.com/MichaelAquilina/zsh-history-filter/master/zsh-history-filter.plugin.zsh"
 export HISTORY_FILTER_EXCLUDE=(
-	"AWS_ACCESS_KEY_ID"
-	"AWS_SECRET_ACCESS_KEY"
-	"AWS_SESSION_TOKEN"
-	"AWS_SECURITY_TOKEN"
-	"STITCH_TOKEN"
-	"VAULT_TOKEN"
+	ALIBABA_CLOUD_ACCESS_KEY_ID
+	ALIBABA_CLOUD_ACCESS_KEY_SECRET
+	AWS_ACCESS_KEY_ID
+	AWS_SECRET_ACCESS_KEY
+	AWS_SECURITY_TOKEN
+	AWS_SESSION_TOKEN
+	STITCH_TOKEN
+	VAULT_TOKEN
 )
+
+for name in $HISTORY_FILTER_EXCLUDE; do  # for completion
+	export $name=
+done
+unset name
 
 # zsh opt
 setopt auto_cd
@@ -75,11 +83,13 @@ zinit snippet OMZL::misc.zsh
 
 # homebrew
 if [[ "$OSTYPE" == "darwin"* ]]; then
-	export HOMEBREW_NO_GOOGLE_ANALYTICS=1
 	export CFLAGS="-I$HOMEBREW_PREFIX/include"
 	export CPPFLAGS="-I$HOMEBREW_PREFIX/include"
 	export LIBRARY_PATH="$HOMEBREW_PREFIX/lib:$LIBRARY_PATH"
 	unset HOMEBREW_PREFIX
+
+	export HOMEBREW_NO_ANALYTICS=1
+	export HOMEBREW_NO_INSTALL_UPGRADE=1
 fi
 
 # python
@@ -102,12 +112,10 @@ cdtemp() {
 
 # tmux
 if type tmux > /dev/null; then
-	TMUX_BIN=`which tmux`
-	alias tmux-inner="$TMUX_BIN -f $HOME/.config/tmux/config-inner.tmux -S /tmp/tmux-$(id -u)-inner"
 	if [[ -n $TMUX ]] then
-		alias tmux="tmux-inner"
+		alias tmux-inner="command tmux -f $HOME/.config/tmux/config-inner.tmux -S /tmp/tmux-$(id -u)-inner"
 	else
-		alias tmux="$TMUX_BIN -f $HOME/.config/tmux/config.tmux"
+		alias tmux="command tmux -f $HOME/.config/tmux/config.tmux"
 	fi
 fi
 
