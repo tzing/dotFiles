@@ -161,7 +161,18 @@ netstat() {
 }
 
 # kubectl
-alias kube=kubectl
+if type kubectl > /dev/null; then
+	alias kube=kubectl
+fi
 
 # watch
-alias watch=viddy
+if type viddy > /dev/null; then
+	alias watch=viddy
+fi
+
+# teleport
+if type tsh > /dev/null; then
+	tsh-kill() {
+		print '\x04' | tsh join --mode peer $1
+	}
+fi
