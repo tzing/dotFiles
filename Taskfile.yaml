@@ -36,7 +36,7 @@ tasks:
       - install/env/tmux
       - install/env/zsh
       - install/git-ilog
-      - install/python/toolkit
+      - install/toolkit/python-tools
       - install/python/workspace
       - install/randn
 
@@ -253,7 +253,7 @@ tasks:
 
   # toolkit
   # ---------------------------------------------------------------------------
-  install/python/toolkit:
+  install/toolkit/python-tools:
     desc: Install some python-based utilities
     deps:
       - helper/local-dir
@@ -263,14 +263,11 @@ tasks:
       - python3 -m venv {{ .PATH_VENV }}
       - |
         {{ range $pip_name, $prog_name := dict
-              "black" "black"
-              "isort" "isort"
               "awscli" "aws"
-              "pygments" "pygmentize"
               "bumpver" "bumpver"
               "bump2version" "bump2version"
         }}
-        {{ $.PATH_VENV }}/bin/pip install {{ $pip_name }}
+        {{ $.PATH_VENV }}/bin/pip install --upgrade {{ $pip_name }}
         ln -s '{{ $.PATH_VENV }}/bin/{{ $prog_name }}' '{{ $.PATH_LOCAL_BIN }}/{{ $prog_name }}' || true
         {{- end }}
 
@@ -289,9 +286,9 @@ tasks:
     status:
       - "[[ -d {{ .PATH_LOCAL_BIN }} ]]"
 
-  # workspace
+  # python
   # ---------------------------------------------------------------------------
-  install/poetry:
+  install/python/poetry:
     cmds:
       - curl -sSL https://install.python-poetry.org | python3 -
       - poetry config virtualenvs.in-project true
@@ -302,7 +299,7 @@ tasks:
   install/python/workspace:
     desc: Create ~/.workspace and install utilities
     deps:
-      - install/poetry
+      - install/python/poetry
     cmds:
       - mkdir -p {{ .PATH_WORKSPACE }}
       - cp -vaf workspace/* {{ .PATH_WORKSPACE }}/
