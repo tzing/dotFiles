@@ -62,9 +62,11 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 # editor
-export EDITOR='nvim'
-alias vi=nvim
-alias vim=nvim
+if type nvim > /dev/null; then
+	export EDITOR='nvim'
+	alias vi=nvim
+	alias vim=nvim
+fi
 
 # ssh
 export SSH_KEY_PATH="~/.ssh/id_ed25519"
