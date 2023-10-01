@@ -6,6 +6,7 @@ RUN set -eux; \
 		curl \
 		git \
 		neovim \
+		rsync \
 		zsh \
 		; \
 	apt-get purge --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \

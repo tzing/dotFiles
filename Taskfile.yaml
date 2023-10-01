@@ -36,9 +36,9 @@ tasks:
       - install/env/tmux
       - install/env/zsh
       - install/git-ilog
-      - install/toolkit/python-tools
       - install/python/workspace
-      - install/randn
+      - install/toolkit/python-tools
+      - install/toolkit/repo-scripts
 
   # helper functions
   # ---------------------------------------------------------------------------
@@ -271,12 +271,10 @@ tasks:
         ln -s '{{ $.PATH_VENV }}/bin/{{ $prog_name }}' '{{ $.PATH_LOCAL_BIN }}/{{ $prog_name }}' || true
         {{- end }}
 
-  install/randn:
-    desc: Install `randn` script
+  install/toolkit/repo-scripts:
+    desc: Install scripts from `bin/` directory in this directory
     cmds:
-      - cp -va 'bin/randn' '{{ .PATH_LOCAL_BIN }}/randn'
-    status:
-      - type randn
+      - cp -va bin/* '{{ .PATH_LOCAL_BIN }}/'
 
   helper/local-dir:
     internal: true
