@@ -297,6 +297,7 @@ tasks:
   install/python/workspace:
     desc: Create ~/.workspace and install utilities
     deps:
+      - helper/local-dir
       - install/python/poetry
     cmds:
       - mkdir -p {{ .PATH_WORKSPACE }}

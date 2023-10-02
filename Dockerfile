@@ -55,3 +55,5 @@ RUN set -eux; \
 # finalize
 WORKDIR /root
 CMD echo sleeping... && sleep infinity
+
+SHELL ["/bin/zsh", "-c"]
