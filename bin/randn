@@ -32,6 +32,8 @@ def main():
         min_, max_ = 0, args.a
     else:
         min_, max_ = args.a, args.b
+
+    random.random()
     print(random.randint(min_, max_))
 
 
