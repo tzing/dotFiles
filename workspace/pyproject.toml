@@ -5,20 +5,18 @@ description = "Tim's dev utilities"
 authors = ["tzing <tzingshih@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
-httpx = {version = "^0.23.3", extras = ["http2", "cli"]}
-pandas = "^1.5.3"
-python-dateutil = "^2.8.2"
-pyyaml = "^6.0"
-requests = "^2.31.0"
-tabulate = "^0.9.0"
-tqdm = "^4.64.1"
+python = "^3.11"
+httpx = { version = "*", extras = ["http2", "cli"] }
+pandas = "*"
+python-dateutil = "*"
+pyyaml = "*"
+requests = "*"
+tabulate = "*"
+tqdm = "*"
 
 [tool.poetry.group.laptop.dependencies]
-tomli = "^2.0.1"
-ipython = "^8.7.0"
-jupyterlab = "^3.5.0"
-psycopg2 = "^2.9.5"
+ipython = "*"
+jupyterlab = "*"
 
 [build-system]
 requires = ["poetry-core"]
