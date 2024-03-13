@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 photon:5.0
+FROM photon:5.0
 
 RUN set -eux; \
 	tdnf install -y \
@@ -41,7 +41,7 @@ RUN set -eux; \
 	export SKIP_SUBMODULE_CHECKOUT=1; \
 	task install/env/zsh; \
 	\
-	zsh -c 'source $HOME/.zshrc'; \
+	zsh "$HOME/.zshrc"; \
 	# fix: ripgrep dir is owned by different user
 	chown root:root -R "$HOME/.config/zsh/plugins/BurntSushi---ripgrep"; \
 	\

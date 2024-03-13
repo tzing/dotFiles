@@ -226,9 +226,7 @@ tasks:
     desc: Update neovim plugins
     interactive: true
     cmds:
-      - nvim '+PlugUpdate!'
-    status:
-      - "[[ -n $SKIP_INTERACTIVE ]]"
+      - nvim '+PlugUpdate!' '+qall!'
 
   # tmux
   # ---------------------------------------------------------------------------
