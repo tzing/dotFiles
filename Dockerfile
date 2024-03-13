@@ -1,38 +1,38 @@
-FROM python:3.10-slim
+FROM --platform=linux/amd64 photon:5.0
 
 RUN set -eux; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
-		curl \
+	tdnf install -y \
 		git \
-		neovim \
+		python3 \
+		python3-pip \
 		rsync \
+		vim \
 		zsh \
 		; \
-	apt-get purge --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	rm -rf /var/lib/apt/lists/*;
-
-# taskfile
-RUN set -exu; \
-	sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/bin; \
-	task --version
+	tdnf clean all; \
+	openssl rehash;
 
 # poetry
 RUN set -eux; \
 	export PIP_NO_CACHE_DIR=1; \
 	export PYTHONDONTWRITEBYTECODE=1; \
 	curl https://install.python-poetry.org | POETRY_HOME=/usr/local python3 -; \
-	poetry --version
+	poetry --version;
+
+# taskfile
+RUN set -exu; \
+	sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/bin; \
+	task --version;
 
 # dotfiles
 ADD . /srv/dotfiles
 
 # vim
 RUN set -eux; \
-	cd /srv/dotfiles; \
-	export SKIP_INTERACTIVE=1; \
-	export SKIP_SUBMODULE_CHECKOUT=1; \
-	task install/env/neovim;
+	mkdir -p "$HOME/.vim/autoload/"; \
+	ln -s /srv/dotfiles/config/nvim/vim-plug/plug.vim "$HOME/.vim/autoload/plug.vim"; \
+	ln -s /srv/dotfiles/config/nvim/init.vim "$HOME/.vimrc"; \
+	yes | vim '+PlugUpdate!' '+qall!';
 
 # zsh env
 RUN set -eux; \
@@ -54,6 +54,7 @@ RUN set -eux; \
 
 # finalize
 WORKDIR /root
-CMD echo sleeping... && sleep infinity
+CMD echo sleeping... && tail -f /dev/null
 
+ENV TERM linux
 SHELL ["/bin/zsh", "-c"]
