@@ -3,7 +3,7 @@ name: Publish Docker image
 on:
   push:
     branches:
-      - main
+      - trunk
   pull_request:
 
 env:
@@ -23,7 +23,7 @@ jobs:
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/trunk'
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -32,5 +32,5 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          push: ${{ github.ref == 'refs/heads/main' }}
+          push: ${{ github.ref == 'refs/heads/trunk' }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
