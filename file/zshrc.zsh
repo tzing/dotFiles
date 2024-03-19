@@ -45,6 +45,8 @@ export HISTORY_FILTER_EXCLUDE=(
 	AWS_SECRET_ACCESS_KEY
 	AWS_SECURITY_TOKEN
 	AWS_SESSION_TOKEN
+	QUID_MONITOR_PASSWORD
+	QUID_MONITOR_TOKEN
 	STITCH_TOKEN
 	VAULT_TOKEN
 )
@@ -97,6 +99,21 @@ fi
 # python
 export POETRY_HOME="$HOME/.local/poetry"
 export PIPENV_VENV_IN_PROJECT=true
+
+if type uv > /dev/null; then
+	pip() {
+		local subcmd="$1"
+		case "$subcmd" in
+			install)
+				shift
+				uv pip install $@
+				;;
+			*)
+				command python3 -m pip $@
+				;;
+		esac
+	}
+fi
 
 # temp dir
 cdtemp() {
