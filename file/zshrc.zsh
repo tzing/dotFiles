@@ -170,14 +170,16 @@ zinit ice as"completion"
 zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
 
 # netstat
-alias __netstat=$(which netstat)
-netstat() {
-	if [[ $# > 0 ]]; then
-		__netstat $@
-	else
-		__netstat -anv | awk 'NR<3 || /LISTEN/'
-	fi
-}
+if type netstat > /dev/null; then
+	netstat() {
+		if [[ $# > 0 ]]; then
+			command netstat $@
+		else
+			echo "${fg[yellow]}> netstat -anv | awk 'NR<3 || /LISTEN/'$reset_color" >&2
+			command netstat -anv | awk 'NR<3 || /LISTEN/'
+		fi
+	}
+fi
 
 # kubectl
 if type kubectl > /dev/null; then
