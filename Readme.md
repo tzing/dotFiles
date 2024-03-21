@@ -36,7 +36,6 @@ task install/all
     htop \
     kubectx \
     neovim \
-    tldr \
     tmux \
     zsh
   ```
