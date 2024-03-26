@@ -8,6 +8,7 @@
   $ randn 20 100
 """
 import argparse
+import os
 import random
 import sys
 
@@ -33,7 +34,7 @@ def main():
     else:
         min_, max_ = args.a, args.b
 
-    random.random()
+    random.seed(os.urandom(4))
     print(random.randint(min_, max_))
 
 
