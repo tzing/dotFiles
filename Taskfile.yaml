@@ -253,23 +253,15 @@ tasks:
   # ---------------------------------------------------------------------------
   install/toolkit/python-tools:
     desc: Install some python-based utilities
-    deps:
-      - helper/local-dir
-    vars:
-      PATH_VENV: "{{ .PATH_LOCAL }}/python-toolkit"
     cmds:
-      - python3 -m venv {{ .PATH_VENV }}
+      - pipx upgrade --install awscli
+      - pipx upgrade --install bump2version
+      - pipx upgrade --install bumpver
       - |
-        {{ range $pip_name, $prog_name := dict
-              "awscli" "aws"
-              "bump2version" "bump2version"
-              "bumpver" "bumpver"
-              "tldr" "tldr"
-              "uv" "uv"
-        }}
-        {{ $.PATH_VENV }}/bin/pip install --upgrade {{ $pip_name }}
-        ln -s '{{ $.PATH_VENV }}/bin/{{ $prog_name }}' '{{ $.PATH_LOCAL_BIN }}/{{ $prog_name }}' || true
-        {{- end }}
+        pipx upgrade --install poetry
+        pipx inject poetry 'secrets.env[all]'
+      - pipx upgrade --install tldr
+      - pipx upgrade --install uv
 
   install/toolkit/repo-scripts:
     desc: Install scripts from `bin/` directory in this directory
@@ -286,19 +278,10 @@ tasks:
 
   # python
   # ---------------------------------------------------------------------------
-  install/python/poetry:
-    cmds:
-      - curl -sSL https://install.python-poetry.org | python3 -
-      - poetry config virtualenvs.in-project true
-      - ln -s "$POETRY_HOME/bin/poetry" '{{ .PATH_LOCAL_BIN }}/poetry' || true
-    status:
-      - type poetry
-
   install/python/workspace:
     desc: Create ~/.workspace and install utilities
     deps:
       - helper/local-dir
-      - install/python/poetry
     cmds:
       - mkdir -p {{ .PATH_WORKSPACE }}
       - cp -vaf workspace/* {{ .PATH_WORKSPACE }}/
