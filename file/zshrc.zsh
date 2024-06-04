@@ -15,6 +15,11 @@ fi
 
 export PATH="$HOME/.local/bin:/usr/local/sbin:$PATH"
 
+# fix: TERM not set in Kubernetes
+if [[ -n KUBERNETES_SERVICE_HOST ]]; then
+	export TERM="${TERM:-linux}"
+fi
+
 # appearance
 zinit snippet OMZL::theme-and-appearance.zsh
 zinit snippet OMZP::colored-man-pages
