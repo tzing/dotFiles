@@ -1,7 +1,6 @@
 version: "3"
 
 vars:
-  PATH_WORKSPACE: "{{ .HOME }}/.workspace"
   PATH_LOCAL: "{{ .HOME }}/.local"
   PATH_LOCAL_BIN: "{{ .PATH_LOCAL }}/bin"
   PATH_CONFIG: "{{ .HOME }}/.config"
@@ -24,7 +23,6 @@ tasks:
       - collect/config/neovim
       - collect/config/tmux
       - collect/config/zsh
-      - collect/python/workspace
 
   install/all:
     desc: Install all environments
@@ -36,7 +34,6 @@ tasks:
       - install/env/tmux
       - install/env/zsh
       - install/git-ilog
-      - install/python/workspace
       - install/toolkit/python-tools
       - install/toolkit/repo-scripts
 
@@ -278,29 +275,6 @@ tasks:
 
   # python
   # ---------------------------------------------------------------------------
-  install/python/workspace:
-    desc: Create ~/.workspace and install utilities
-    deps:
-      - helper/local-dir
-    cmds:
-      - mkdir -p {{ .PATH_WORKSPACE }}
-      - cp -vaf workspace/* {{ .PATH_WORKSPACE }}/
-      - |
-        cd {{ .PATH_WORKSPACE }}
-        poetry install --sync --no-root
-      - |
-        {{- range $app := list
-              "httpx"
-              "ipython"
-              "jupyter"
-        }}
-        ln -s '{{ $.PATH_WORKSPACE }}/.venv/bin/{{ $app }}' '{{ $.PATH_LOCAL_BIN }}/{{ $app }}' || true
-        {{- end }}
-
-  collect/python/workspace:
-    desc: Collect config from workspace
-    cmds:
-      - cp -va {{ .PATH_WORKSPACE }}/* workspace/
 
   # zsh
   # ---------------------------------------------------------------------------
