@@ -34,6 +34,7 @@ tasks:
       - install/env/tmux
       - install/env/zsh
       - install/git-ilog
+      - install/python/playground
       - install/toolkit/python-tools
       - install/toolkit/repo-scripts
 
@@ -96,6 +97,12 @@ tasks:
         else
           diff -u '{{ .OLD }}' '{{ .NEW }}' {{ .HELPER }}
         fi
+
+  helper/ensure-ipython:
+    cmds:
+      - pipx install ipython
+    status:
+      - "[[ -x '{{ .PATH_LOCAL_BIN }}/ipython' ]]"
 
   # bat
   # ---------------------------------------------------------------------------
@@ -275,6 +282,24 @@ tasks:
 
   # python
   # ---------------------------------------------------------------------------
+  install/python/playground:
+    desc: Create python playground
+    deps:
+      - task: helper/ensure-ipython
+    cmds:
+      - |-
+        pipx inject ipython --pip-args='--upgrade' \
+          beautifulsoup4    \
+          'httpx[cli]'      \
+          ipython           \
+          jupyterlab        \
+          lxml              \
+          pandas            \
+          python-dateutil   \
+          pyyaml            \
+          requests          \
+          tabulate          \
+          tqdm
 
   # zsh
   # ---------------------------------------------------------------------------
