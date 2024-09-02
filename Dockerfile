@@ -56,5 +56,4 @@ RUN set -eux; \
 WORKDIR /root
 CMD echo sleeping... && tail -f /dev/null
 
-ENV TERM linux
 SHELL ["/bin/zsh", "-c"]

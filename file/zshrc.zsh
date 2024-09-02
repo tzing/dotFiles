@@ -15,11 +15,6 @@ fi
 
 export PATH="$HOME/.local/bin:/usr/local/sbin:$PATH"
 
-# fix: TERM not set in Kubernetes
-if [[ -n KUBERNETES_SERVICE_HOST ]]; then
-	export TERM="${TERM:-linux}"
-fi
-
 # appearance
 zinit snippet OMZL::theme-and-appearance.zsh
 zinit snippet OMZP::colored-man-pages
@@ -44,16 +39,12 @@ fi
 # credentials
 zinit snippet "https://raw.githubusercontent.com/MichaelAquilina/zsh-history-filter/master/zsh-history-filter.plugin.zsh"
 export HISTORY_FILTER_EXCLUDE=(
+	_TOKEN
+	_PASSWORD
 	ALIBABA_CLOUD_ACCESS_KEY_ID
 	ALIBABA_CLOUD_ACCESS_KEY_SECRET
 	AWS_ACCESS_KEY_ID
 	AWS_SECRET_ACCESS_KEY
-	AWS_SECURITY_TOKEN
-	AWS_SESSION_TOKEN
-	QUID_MONITOR_PASSWORD
-	QUID_MONITOR_TOKEN
-	STITCH_TOKEN
-	VAULT_TOKEN
 )
 
 for name in $HISTORY_FILTER_EXCLUDE; do  # for completion
@@ -99,6 +90,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
 	export HOMEBREW_NO_ANALYTICS=1
 	export HOMEBREW_NO_INSTALL_UPGRADE=1
+	export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
 fi
 
 # python
