@@ -5,6 +5,7 @@ on:
     branches:
       - trunk
   pull_request:
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
@@ -30,7 +31,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: ${{ github.ref == 'refs/heads/trunk' }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
