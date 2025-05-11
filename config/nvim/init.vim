@@ -1,6 +1,6 @@
 " plug
 call plug#begin()
-  " enviroment
+  " environment
   Plug 'tpope/vim-sensible'
 
   " theme
@@ -15,6 +15,9 @@ call plug#begin()
 
 call plug#end()
 
+" fix NLKNguyen/papercolor-theme#201
+  source $VIMRUNTIME/colors/vim.lua
+  set termguicolors
 
 " appearance
   let g:airline_theme='murmur'
@@ -24,7 +27,6 @@ call plug#end()
   set number
   set cursorline
   set colorcolumn=80,120
-  set t_Co=256
 
 " case insensitive search
   set ignorecase
