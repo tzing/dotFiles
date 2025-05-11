@@ -7,7 +7,7 @@
 	editor = nvim
 
 [init]
-	defaultBranch = trunk
+	defaultBranch = main
 
 [filter "lfs"]
 	process = git-lfs filter-process
