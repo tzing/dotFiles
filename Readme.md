@@ -20,9 +20,9 @@ task install/all
 
 * [Fira code](https://github.com/tonsky/FiraCode) font
 
-    ```bash
-    brew install --cask homebrew/cask-fonts/font-fira-code
-    ```
+  ```bash
+  brew install --cask font-fira-code
+  ```
 
 * Utilities
 
@@ -67,11 +67,3 @@ task install/all
     - [danny0838/content-farm-terminator](https://danny0838.github.io/content-farm-terminator/zh/subscriptions-ublacklist)
     - [arosh/ublacklist-stackoverflow-translation](https://github.com/arosh/ublacklist-stackoverflow-translation)
     - [arosh/ublacklist-github-translation](https://github.com/arosh/ublacklist-github-translation)
-
-* Vim
-
-  * [Language server](https://github.com/prabirshrestha/vim-lsp/wiki/Servers)
-
-    ```bash
-    pip install python-language-server
-    ```
