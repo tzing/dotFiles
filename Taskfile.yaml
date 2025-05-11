@@ -33,7 +33,6 @@ tasks:
       - install/env/neovim
       - install/env/tmux
       - install/env/zsh
-      - install/git-ilog
       - install/python/playground
       - install/toolkit/python-tools
       - install/toolkit/repo-scripts
@@ -144,15 +143,6 @@ tasks:
     desc: Collect git configs
     cmds:
       - cp -va '{{ .HOME }}/.gitconfig' 'file/gitconfig'
-
-  # git-ilog
-  # ---------------------------------------------------------------------------
-  install/git-ilog:
-    desc: Install git-ilog script
-    cmds:
-      - cp -va 'file/git-ilog.zsh' '{{ .PATH_LOCAL_BIN }}/git-ilog'
-    status:
-      - "[[ -a '{{ .PATH_LOCAL_BIN }}/git-ilog' ]]"
 
   # k9s
   # ---------------------------------------------------------------------------
@@ -269,6 +259,8 @@ tasks:
 
   install/toolkit/repo-scripts:
     desc: Install scripts from `bin/` directory in this directory
+    deps:
+      - task: helper/local-dir
     cmds:
       - cp -va bin/* '{{ .PATH_LOCAL_BIN }}/'
 
