@@ -6,7 +6,7 @@
 ## Deploy configs
 
 ```bash
-task install/all
+task ':install'
 ```
 
 

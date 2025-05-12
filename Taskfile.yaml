@@ -15,24 +15,24 @@ tasks:
       - git submodule update --init --remote
       - git status
 
-  collect:
+  ":collect":
     desc: Collect all configs
     deps:
-      - collect/config/git
-      - collect/config/k9s
-      - collect/config/neovim
-      - collect/config/tmux
-      - collect/config/zsh
+      - collect/git/config
+      - collect/k9s/config
+      - collect/neovim/config
+      - collect/tmux/config
+      - collect/zsh/config
 
-  install/all:
+  ":install":
     desc: Install all environments
     deps:
-      - install/config/bat
-      - install/config/git
-      - install/config/k9s
-      - install/env/neovim
-      - install/env/tmux
-      - install/env/zsh
+      - install/bat/config
+      - install/git/config
+      - install/k9s/config
+      - install/neovim/env
+      - install/tmux/env
+      - install/zsh/env
       - install/python/playground
       - install/toolkit/python-tools
       - install/toolkit/repo-scripts
@@ -105,7 +105,7 @@ tasks:
 
   # bat
   # ---------------------------------------------------------------------------
-  install/config/bat:
+  install/bat/config:
     desc: Install bat config
     cmds:
       - task: helper/copy-config-dir
@@ -114,24 +114,24 @@ tasks:
 
   # git
   # ---------------------------------------------------------------------------
-  install/config/git:
+  install/git/config:
     desc: Install git config
     cmds:
-      - task: diff/config/git
+      - task: diff/git/config
       - task: helper/copy-config-file
         vars:
           SOURCE: file/gitconfig
           DESTINATION: "{{ .HOME }}/.gitconfig"
           BACKUP: "{{ .HOME }}/.bak.gitconfig"
-      - task: install/config/git/gitignore
+      - task: install/git/gitignore
 
-  install/config/git/gitignore:
+  install/git/gitignore:
     cmds:
       - mkdir -p {{ .PATH_CONFIG }}/git
       - curl https://www.toptal.com/developers/gitignore/api/macos > {{ .PATH_CONFIG }}/git/macOS.gitignore
       - git config --global core.excludesfile {{ .PATH_CONFIG }}/git/macOS.gitignore
 
-  diff/config/git:
+  diff/git/config:
     desc: Show git config diff between the currently used one and the one in this repo
     cmds:
       - task: helper/show-diff
@@ -139,14 +139,14 @@ tasks:
           NEW: file/gitconfig
           OLD: "{{ .HOME }}/.gitconfig"
 
-  collect/config/git:
+  collect/git/config:
     desc: Collect git configs
     cmds:
       - cp -va '{{ .HOME }}/.gitconfig' 'file/gitconfig'
 
   # k9s
   # ---------------------------------------------------------------------------
-  install/config/k9s:
+  install/k9s/config:
     desc: Install k9s config
     cmds:
       - task: helper/copy-config-dir
@@ -154,7 +154,7 @@ tasks:
           NAME: k9s
           DIR: "{{ .PATH_APPLICATION_SUPPORT }}"
 
-  diff/config/k9s:
+  diff/k9s/config:
     desc: Show k9s config diff between the currently used one and the one in this repo
     cmds:
       - task: helper/show-diff
@@ -162,20 +162,20 @@ tasks:
           NEW: config/k9s/config.yml
           OLD: "{{ .PATH_APPLICATION_SUPPORT }}/k9s/config.yml"
 
-  collect/config/k9s:
+  collect/k9s/config:
     desc: Collect k9s configs
     cmds:
       - cp -va '{{ .PATH_APPLICATION_SUPPORT }}/k9s/config.yml' 'config/k9s/config.yml'
 
   # neovim
   # ---------------------------------------------------------------------------
-  install/env/neovim:
+  install/neovim/env:
     desc: Setup neovim environment
     deps:
       - task: helper/checkout-submodule
         vars:
           DIR: config/nvim/vim-plug
-      - install/config/neovim
+      - install/neovim/config
     cmds:
       - task: helper/copy-config-dir
         vars:
@@ -193,17 +193,17 @@ tasks:
     status:
       - "[[ -L {{ .TARGET }} ]]"
 
-  install/config/neovim:
+  install/neovim/config:
     cmds:
-      - task: diff/config/neovim
+      - task: diff/neovim/config
       - task: helper/copy-config-file
         vars:
           SOURCE: config/nvim/init.vim
           DESTINATION: "{{ .PATH_CONFIG }}/nvim/init.vim"
           BACKUP: "{{ .PATH_CONFIG }}/nvim/init.bak.vim"
-      - task: update/plugin/neovim
+      - task: update/neovim/plugin
 
-  diff/config/neovim:
+  diff/neovim/config:
     desc: Show neovim config diff between the currently used one and the one in this repo
     cmds:
       - task: helper/show-diff
@@ -211,12 +211,12 @@ tasks:
           NEW: config/nvim/init.vim
           OLD: "{{ .PATH_CONFIG }}/nvim/init.vim"
 
-  collect/config/neovim:
+  collect/neovim/config:
     desc: Collect neovim config
     cmds:
       - cp -va '{{ .PATH_CONFIG }}/nvim/init.vim' 'config/nvim/init.vim'
 
-  update/plugin/neovim:
+  update/neovim/plugin:
     desc: Update neovim plugins
     interactive: true
     cmds:
@@ -224,7 +224,7 @@ tasks:
 
   # tmux
   # ---------------------------------------------------------------------------
-  install/env/tmux:
+  install/tmux/env:
     desc: Install tmux config
     deps:
       - task: helper/checkout-submodule
@@ -238,7 +238,7 @@ tasks:
         vars:
           NAME: tmux
 
-  collect/config/tmux:
+  collect/tmux/config:
     desc: Collect tmux config
     cmds:
       - cp -va {{ .PATH_CONFIG }}/tmux/*.tmux config/tmux/
@@ -295,7 +295,7 @@ tasks:
 
   # zsh
   # ---------------------------------------------------------------------------
-  install/env/zsh:
+  install/zsh/env:
     desc: Setup zsh environment
     deps:
       - task: helper/checkout-submodule
@@ -305,18 +305,18 @@ tasks:
       - task: helper/copy-config-dir
         vars:
           NAME: zsh
-      - task: install/config/zsh
+      - task: install/zsh/config
 
-  install/config/zsh:
+  install/zsh/config:
     cmds:
-      - task: diff/config/zsh
+      - task: diff/zsh/config
       - task: helper/copy-config-file
         vars:
           SOURCE: file/zshrc.zsh
           DESTINATION: "{{ .HOME }}/.zshrc"
           BACKUP: "{{ .HOME }}/.zshrc.bak.zsh"
 
-  diff/config/zsh:
+  diff/zsh/config:
     desc: Show zsh config diff between the currently used one and the one in this repo
     cmds:
       - task: helper/show-diff
@@ -324,12 +324,12 @@ tasks:
           NEW: file/zshrc.zsh
           OLD: "{{ .HOME }}/.zshrc"
 
-  collect/config/zsh:
+  collect/zsh/config:
     desc: Collect zsh config
     cmds:
       - cp -va "$HOME/.zshrc" 'file/zshrc.zsh'
 
-  update/plugin/zsh:
+  update/zsh/plugin:
     desc: Update zsh plugins
     cmds:
       - zinit update
