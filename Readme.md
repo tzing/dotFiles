@@ -45,9 +45,14 @@ task install/all
 
   ```bash
   brew install --cask \
+    1password \
+    appcleaner \
+    chatgpt \
+    dash \
     docker \
     drawio \
     firefox \
+    ghostty \
     microsoft-edge \
     obsidian \
     scroll-reverser \
