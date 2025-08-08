@@ -18,10 +18,12 @@ task ':install'
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   ```
 
-* [Fira code](https://github.com/tonsky/FiraCode) font
+* Fonts
 
   ```bash
-  brew install --cask font-fira-code
+  brew install --cask \
+    font-fira-code \
+    font-noto-sans-cjk
   ```
 
 * Utilities
