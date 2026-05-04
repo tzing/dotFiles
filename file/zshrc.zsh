@@ -81,6 +81,9 @@ zinit snippet OMZL::directories.zsh
 zinit snippet OMZL::functions.zsh  # for OMZL::misc.zsh
 zinit snippet OMZL::misc.zsh
 
+export GH_TELEMETRY=false
+export DO_NOT_TRACK=true
+
 # homebrew
 if [[ "$OSTYPE" == "darwin"* ]]; then
 	export CFLAGS="-I$HOMEBREW_PREFIX/include"
